@@ -1,4 +1,3 @@
-// src/components/WeatherCard.tsx
 import { weatherCardMap } from "../utils/weatherCardMap";
 
 interface WeatherCardProps {

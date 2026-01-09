@@ -1,3 +1,5 @@
+
+
 const { obtenerClima } = require("../services/weatherService");
 
 const getClima = async (req, res) => {

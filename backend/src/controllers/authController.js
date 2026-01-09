@@ -2,7 +2,7 @@ const db = require("../config/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const JWT_SECRET = "supersecreto123"; // cámbialo si quieres
+const JWT_SECRET = "supersecreto123"; // ..
 
 // ---------------------- REGISTRO ----------------------
 const register = async (req, res) => {
@@ -45,9 +45,9 @@ const login = async (req, res) => {
     return res.json({
       message: "Login exitoso",
       token,
-      nombre: user.nombre,     // 👈 NECESARIO PARA TU FRONTEND
-      email: user.email,       // opcional
-      id: user.id              // opcional
+      nombre: user.nombre,     // ...
+      email: user.email,       // ...
+      id: user.id              
     });
 
   } catch (error) {

@@ -1,9 +1,8 @@
-// src/services/weatherApi.ts
 const GEO_URL = "https://api.openweathermap.org/geo/1.0/direct";
 const ONECALL_URL = "http://localhost:5000/api/weather"; // Usamos el backend como proxy
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY as string || "441745e11d605543eceacd39828b099d";
 
-// caches simples
+// caches 
 const geoCache = new Map<string, any>();
 const oneCallCache = new Map<string, any>();
 

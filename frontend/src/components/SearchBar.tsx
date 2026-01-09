@@ -1,4 +1,4 @@
-// src/components/SearchBar.tsx
+
 import { useState } from "react";
 import { searchCities } from "../services/weatherApi";
 
