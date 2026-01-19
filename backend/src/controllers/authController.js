@@ -2,7 +2,7 @@ const db = require("../config/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const JWT_SECRET = "supersecreto123"; // ..
+const JWT_SECRET = process.env.JWT_SECRET; // ..
 
 // ---------------------- REGISTRO ----------------------
 const register = async (req, res) => {
