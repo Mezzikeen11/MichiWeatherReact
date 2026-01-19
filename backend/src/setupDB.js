@@ -13,7 +13,7 @@ const setup = async () => {
         table.string("password");
         table.timestamp("creado").defaultTo(db.fn.now());
       });
-      console.log("Tabla usuarios creada");
+      console.log("✅ Tabla usuarios creada");
     }
 
     // ---------------- CONSULTAS ----------------
@@ -27,7 +27,7 @@ const setup = async () => {
         table.json("respuesta");
         table.timestamp("fecha").defaultTo(db.fn.now());
       });
-      console.log("Tabla consultas creada");
+      console.log("✅ Tabla consultas creada");
     }
 
     // ---------------- CACHE ----------------
@@ -39,16 +39,14 @@ const setup = async () => {
         table.json("datos");
         table.timestamp("expiracion");
       });
-      console.log("Tabla cache creada");
+      console.log("✅ Tabla cache creada");
     }
 
     console.log("✅ Base de datos lista");
-    process.exit(0);
 
   } catch (error) {
     console.error("❌ Error creando tablas:", error);
-    process.exit(1);
   }
 };
 
-setup();
+module.exports = setup;

@@ -1,10 +1,13 @@
 require("dotenv").config();
+require("./setupDB");
+
 
 const express = require("express");
 const cors = require("cors");
 const weatherRoutes = require("./routes/weatherRoutes");
 const authRoutes = require("./routes/authRoutes");
 const setupDB = require("./setupDB"); 
+
 
 const app = express();
 app.use(cors());
