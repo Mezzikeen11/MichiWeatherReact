@@ -1,8 +1,9 @@
 const db = require("./config/db");
 
-async function setupDB() {
+const setup = async () => {
   try {
-    // Usuarios
+
+    // ---------------- USUARIOS ----------------
     const existeUsuarios = await db.schema.hasTable("usuarios");
     if (!existeUsuarios) {
       await db.schema.createTable("usuarios", (table) => {
@@ -10,11 +11,12 @@ async function setupDB() {
         table.string("nombre");
         table.string("email").unique();
         table.string("password");
+        table.timestamp("creado").defaultTo(db.fn.now());
       });
       console.log("Tabla usuarios creada");
     }
 
-    // Consultas
+    // ---------------- CONSULTAS ----------------
     const existeConsultas = await db.schema.hasTable("consultas");
     if (!existeConsultas) {
       await db.schema.createTable("consultas", (table) => {
@@ -22,28 +24,31 @@ async function setupDB() {
         table.string("ciudad");
         table.float("lat");
         table.float("lon");
-        table.jsonb("respuesta");
+        table.json("respuesta");
         table.timestamp("fecha").defaultTo(db.fn.now());
       });
       console.log("Tabla consultas creada");
     }
 
-    // Cache
+    // ---------------- CACHE ----------------
     const existeCache = await db.schema.hasTable("cache");
     if (!existeCache) {
       await db.schema.createTable("cache", (table) => {
         table.increments("id").primary();
         table.string("ciudad").unique();
-        table.jsonb("datos");
+        table.json("datos");
         table.timestamp("expiracion");
       });
       console.log("Tabla cache creada");
     }
 
-    console.log("Base lista");
-  } catch (err) {
-    console.error("Error creando tablas:", err);
-  }
-}
+    console.log("✅ Base de datos lista");
+    process.exit(0);
 
-module.exports = setupDB;
+  } catch (error) {
+    console.error("❌ Error creando tablas:", error);
+    process.exit(1);
+  }
+};
+
+setup();
