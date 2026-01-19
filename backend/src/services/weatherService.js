@@ -1,7 +1,7 @@
 const axios = require("axios");
 const db = require("../config/db");
 
-const API_KEY = "441745e11d605543eceacd39828b099d"; 
+const API_KEY = process.env.OPENWEATHER_KEY;
 
 const obtenerClima = async (ciudad) => {
   try {

@@ -1,7 +1,10 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const weatherRoutes = require("./routes/weatherRoutes");
 const authRoutes = require("./routes/authRoutes");
+
 
 const app = express();
 app.use(cors());
