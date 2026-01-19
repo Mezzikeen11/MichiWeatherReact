@@ -1,5 +1,5 @@
 const GEO_URL = "https://api.openweathermap.org/geo/1.0/direct";
-const ONECALL_URL = "http://localhost:5000/api/weather"; // Usamos el backend como proxy
+const ONECALL_URL = "https://michiweather-backend.onrender.com/api/weather";
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY as string || "441745e11d605543eceacd39828b099d";
 
 // caches 
