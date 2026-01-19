@@ -1,6 +1,6 @@
 const db = require("./config/db");
 
-const setup = async () => {
+async function setupDB() {
   try {
     // Usuarios
     const existeUsuarios = await db.schema.hasTable("usuarios");
@@ -41,13 +41,9 @@ const setup = async () => {
     }
 
     console.log("Base lista");
-    process.exit(0);
-
   } catch (err) {
     console.error("Error creando tablas:", err);
-    process.exit(1);
   }
-};
+}
 
-setup();
-
+module.exports = setupDB;
