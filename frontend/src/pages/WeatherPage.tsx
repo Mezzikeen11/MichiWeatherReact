@@ -34,6 +34,7 @@ export default function WeatherPage() {
       setLoading(true);
       const { raw, cityName } = await getWeatherByCityName(name);
       const norm = normalizeWeather({ raw, cityName });
+      console.log("HOURLY:", norm.hourly);
       setCity(norm);
 
       navigate(`/weather/${encodeURIComponent(cityName)}`, { replace: true });

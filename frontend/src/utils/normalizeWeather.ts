@@ -4,7 +4,7 @@
 function mapMainToIconKey(main: string, code: number): string {
   main = main.toLowerCase();
 
-  if (code === 800) return "sol"; // día despejado
+  if (code === 800) return "sol";
   if (main.includes("clear")) return "sol";
 
   if (code >= 801 && code <= 803) return "parcial";
@@ -21,11 +21,10 @@ function mapMainToIconKey(main: string, code: number): string {
   if (main.includes("fog") || main.includes("mist") || main.includes("smoke"))
     return "niebla";
 
-  // fallback seguro
   return "nublado";
 }
 
-// Convierte el clima principal → nombre bonito para WeatherCard
+// Convierte código → texto bonito
 function mapToConditionKey(code: number, main: string): string {
   if (code === 800) return "soleado";
   if (code >= 801 && code <= 803) return "parcialmente nublado";
@@ -59,21 +58,29 @@ export function normalizeWeather({ raw, cityName }: { raw: any; cityName: string
 
   const conditionKey = mapToConditionKey(weatherCode, weatherMain);
 
-  // CONVERSIÓN NUEVA CORREGIDA
+  // =========================
+  // ⏱️ HOURLY → usa weatherCode (NUMÉRICO)
+  // =========================
   const hourly = hourlyRaw.slice(0, 6).map((h: any) => ({
-    label: new Date(h.dt * 1000).toLocaleTimeString("es-MX", {
+    hour: new Date(h.dt * 1000).toLocaleTimeString("es-MX", {
       hour: "2-digit",
       minute: "2-digit",
     }),
-    icon: mapMainToIconKey(h.weather?.[0]?.main ?? "Clouds", h.weather?.[0]?.id ?? 803),
     temp: Math.round(h.temp),
+    weatherCode: h.weather?.[0]?.id ?? 803,
   }));
 
+  // =========================
+  // 📅 WEEKLY → usa icon string (sol, lluvia, etc)
+  // =========================
   const weekly = dailyRaw.slice(0, 7).map((d: any) => ({
     day: new Date(d.dt * 1000)
       .toLocaleDateString("es-MX", { weekday: "short" })
       .replace(".", ""),
-    icon: mapMainToIconKey(d.weather?.[0]?.main ?? "Clouds", d.weather?.[0]?.id ?? 803),
+    icon: mapMainToIconKey(
+      d.weather?.[0]?.main ?? "Clouds",
+      d.weather?.[0]?.id ?? 803
+    ),
     max: Math.round(d.temp.max),
     min: Math.round(d.temp.min),
   }));
