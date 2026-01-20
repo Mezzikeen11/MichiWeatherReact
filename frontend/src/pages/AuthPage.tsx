@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { registerUser, loginUser } from "../services/authApi";
 import bg from "../assets/fondo.png";
-import "./AuthPage.css";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);

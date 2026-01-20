@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiUser, FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
+import { FiUser, FiMenu, FiMoon, FiSun, FiX, FiSearch } from "react-icons/fi";
 import SearchBar from "./SearchBar";
 import { recommendedLocations } from "../utils/recommendedLocations";
 
@@ -8,21 +8,25 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [locOpen, setLocOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
   const [dark, setDark] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     return document.documentElement.getAttribute("data-theme") === "dark";
   });
 
-  // maneja selección desde SearchBar
+  // 🔹 Selección desde SearchBar
   const handleSelectCity = (cityName: string) => {
-    // navegar a ruta que carga WeatherPage por city
     navigate(`/weather/${encodeURIComponent(cityName)}`);
+    setMenuOpen(false);   // 👈 cerrar hamburguesa
+    setSearchOpen(false); // 👈 cerrar modal búsqueda
   };
 
-  // maneja selección desde el dropdown de Ubicaciones
+  // 🔹 Selección desde ubicaciones recomendadas
   const handleSelectRecommended = (locQuery: string) => {
     navigate(`/weather/${encodeURIComponent(locQuery)}`);
     setLocOpen(false);
+    setMenuOpen(false); // 👈 cerrar hamburguesa
   };
 
   return (
@@ -36,11 +40,14 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-6 ml-6">
-            <Link to="/" className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition">
+            <Link
+              to="/"
+              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
+            >
               Inicio
             </Link>
 
-            {/* Ubicaciones: botón que abre dropdown interno */}
+            {/* Ubicaciones */}
             <div className="relative">
               <button
                 onClick={() => setLocOpen((s) => !s)}
@@ -51,7 +58,9 @@ export default function Navbar() {
 
               {locOpen && (
                 <div className="absolute left-0 mt-2 w-48 bg-[var(--panel)] shadow-michi-1 rounded-xl p-2 z-50">
-                  <p className="px-3 py-1 text-xs text-[var(--accent)] font-semibold">Recomendadas</p>
+                  <p className="px-3 py-1 text-xs text-[var(--accent)] font-semibold">
+                    Recomendadas
+                  </p>
 
                   <div className="flex flex-col">
                     {recommendedLocations.map((loc, i) => (
@@ -70,57 +79,105 @@ export default function Navbar() {
           </nav>
         </div>
 
+        {/* DERECHA */}
         <div className="flex items-center gap-3">
-          {/* Paso la prop obligatoria onSelectCity al SearchBar */}
+          {/* 🔍 SearchBar SOLO en desktop */}
           <div className="hidden sm:block">
             <SearchBar onSelectCity={handleSelectCity} />
           </div>
 
+          {/* 🔍 LUPA SOLO EN MÓVIL */}
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="sm:hidden h-9 w-9 grid place-items-center hover:bg-[var(--accent)]/10 rounded-full"
+            aria-label="Buscar ciudad"
+          >
+            <FiSearch className="text-[var(--accent)]" />
+          </button>
+
+          {/* 🌙 Tema */}
           <button
             onClick={() => {
               setDark((s) => !s);
-              document.documentElement.setAttribute("data-theme", !dark ? "dark" : "light");
+              document.documentElement.setAttribute(
+                "data-theme",
+                !dark ? "dark" : "light"
+              );
             }}
             title="Cambiar tema"
             aria-label="Cambiar tema"
             className="h-9 w-9 rounded-full grid place-items-center hover:shadow-michi-1 transition bg-transparent"
           >
-            {dark ? <FiSun className="text-[var(--accent)]" /> : <FiMoon className="text-[var(--accent)]" />}
+            {dark ? (
+              <FiSun className="text-[var(--accent)]" />
+            ) : (
+              <FiMoon className="text-[var(--accent)]" />
+            )}
           </button>
 
-          <Link to="/perfil" title="Perfil" className="h-9 w-9 rounded-full grid place-items-center hover:shadow-michi-1 transition bg-transparent">
+          {/* 👤 Perfil */}
+          <Link
+            to="/perfil"
+            title="Perfil"
+            className="h-9 w-9 rounded-full grid place-items-center hover:shadow-michi-1 transition bg-transparent"
+          >
             <FiUser className="text-[var(--accent)]" />
           </Link>
 
+          {/* ☰ Hamburguesa */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="h-9 w-9 inline-flex items-center justify-center lg:hidden hover:bg-[var(--accent)]/10 transition rounded"
             aria-label="Abrir menú"
           >
-            {menuOpen ? <FiX className="text-[var(--dark)] dark:text-[var(--white)]" /> : <FiMenu className="text-[var(--dark)] dark:text-[var(--white)]" />}
+            {menuOpen ? (
+              <FiX className="text-[var(--dark)] dark:text-[var(--white)]" />
+            ) : (
+              <FiMenu className="text-[var(--dark)] dark:text-[var(--white)]" />
+            )}
           </button>
         </div>
       </div>
 
+      {/* 📱 MENÚ MOBILE */}
       {menuOpen && (
         <div className="lg:hidden bg-[var(--panel)] dark:bg-[var(--panel)] border-t border-[var(--glass)] py-4 px-6 space-y-3 animate-fade-in">
-          <Link to="/" className="block font-medium hover:text-[var(--accent)] transition">Inicio</Link>
+          <Link
+            to="/"
+            className="block font-medium hover:text-[var(--accent)] transition"
+          >
+            Inicio
+          </Link>
+
           <button
             onClick={() => setLocOpen((s) => !s)}
             className="block font-medium hover:text-[var(--accent)] transition text-left"
           >
             Ubicaciones
           </button>
-          {/* mostrar recomendadas también en mobile menu */}
+
           {locOpen && (
             <div className="pl-4">
               {recommendedLocations.map((loc, i) => (
-                <button key={i} onClick={() => handleSelectRecommended(loc.name)} className="block py-2 text-sm">
+                <button
+                  key={i}
+                  onClick={() => handleSelectRecommended(loc.name)}
+                  className="block py-2 text-sm"
+                >
                   {loc.name}
                 </button>
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* 🔍 MODAL DE BÚSQUEDA EN MÓVIL */}
+      {searchOpen && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-start justify-center pt-24">
+          <div className="bg-[var(--panel)] rounded-xl p-4 w-[90%] max-w-sm shadow-michi-1">
+            <SearchBar onSelectCity={handleSelectCity} />
+          </div>
         </div>
       )}
     </header>
