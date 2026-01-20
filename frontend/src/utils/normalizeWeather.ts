@@ -26,7 +26,7 @@ function mapMainToIconKey(main: string, code: number): string {
 }
 
 // Convierte el clima principal → nombre bonito para WeatherCard
-function mapToConditionKey(code: number, main: string, desc: string) {
+function mapToConditionKey(code: number, main: string): string {
   if (code === 800) return "soleado";
   if (code >= 801 && code <= 803) return "parcialmente nublado";
   if (code === 804) return "nublado";
@@ -56,9 +56,8 @@ export function normalizeWeather({ raw, cityName }: { raw: any; cityName: string
 
   const weatherCode = current.weather?.[0]?.id ?? 800;
   const weatherMain = (current.weather?.[0]?.main || "Clear").toString().toLowerCase();
-  const weatherDesc = (current.weather?.[0]?.description || "").toString().toLowerCase();
 
-  const conditionKey = mapToConditionKey(weatherCode, weatherMain, weatherDesc);
+  const conditionKey = mapToConditionKey(weatherCode, weatherMain);
 
   // CONVERSIÓN NUEVA CORREGIDA
   const hourly = hourlyRaw.slice(0, 6).map((h: any) => ({

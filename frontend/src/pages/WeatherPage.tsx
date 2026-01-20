@@ -5,7 +5,7 @@ import ForecastHourly from "../components/ForecastHourly";
 import ForecastWeekly from "../components/ForecastWeekly";
 import Stats from "../components/Stats";
 
-import { getWeatherByCityName, getWeatherByCoords } from "../services/weatherApi";
+import { getWeatherByCityName} from "../services/weatherApi";
 import { normalizeWeather } from "../utils/normalizeWeather";
 
 type City = {

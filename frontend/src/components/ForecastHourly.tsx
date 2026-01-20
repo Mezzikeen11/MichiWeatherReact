@@ -1,29 +1,14 @@
-// src/components/ForecastHourly.tsx
-import type { IconType } from "react-icons";
-import { WiDaySunny, WiCloud, WiRain, WiNightClear } from "react-icons/wi";
+import { WiDaySunny, WiCloud, WiRain } from "react-icons/wi";
 
 export interface HourlyForecast {
-  label: string;
-  icon?: string; // "sol", "nublado", "lluvia", "noche", "llovizna", "granizo", ...
+  hour: string;
   temp: number;
+  weatherCode?: number;
 }
 
 interface ForecastHourlyProps {
   data?: HourlyForecast[];
 }
-
-// Mapeo string -> React Icon (IconType)
-const iconMap: Record<string, IconType> = {
-  sol: WiDaySunny,
-  soleado: WiDaySunny,
-  nublado: WiCloud,
-  parcial: WiCloud,
-  lluvia: WiRain,
-  lluvioso: WiRain,
-  llovizna: WiRain,
-  granizo: WiRain,
-  noche: WiNightClear,
-};
 
 export default function ForecastHourly({ data = [] }: ForecastHourlyProps) {
   if (!Array.isArray(data) || data.length === 0) return null;
@@ -32,14 +17,19 @@ export default function ForecastHourly({ data = [] }: ForecastHourlyProps) {
     <section aria-label="Pronóstico por horas" className="w-full">
       <div className="flex gap-4 min-w-max">
         {data.map((hour, i) => {
-          const IconComponent = hour.icon ? iconMap[hour.icon] : null;
+          let IconComponent = null;
+          if (hour.weatherCode !== undefined) {
+            if (hour.weatherCode < 3) IconComponent = WiDaySunny;
+            else if (hour.weatherCode < 60) IconComponent = WiCloud;
+            else IconComponent = WiRain;
+          }
 
           return (
             <div
               key={i}
               className="min-w-[120px] bg-[var(--panel)]/90 dark:bg-[var(--glass)] rounded-xl p-4 shadow-michi-1 flex flex-col items-center justify-center hover:scale-[1.03] transition"
             >
-              <p className="text-sm font-semibold text-[var(--muted)]">{hour.label}</p>
+              <p className="text-sm font-semibold text-[var(--muted)]">{hour.hour}</p>
 
               {IconComponent ? (
                 <IconComponent
