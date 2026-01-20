@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { registerUser, loginUser } from "../services/authApi";
 import bg from "../assets/fondo.png";
+import "./AuthPage.css";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -62,10 +63,7 @@ export default function AuthPage() {
   // --- Mostrar contenido diferente si hay sesión iniciada ---
   if (user) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${bg})` }}
-      >
+      <div className="min-h-screen flex items-center justify-center bg-cover bg-center auth-bg auth-bg-logged">
         <div className="absolute inset-0 bg-black/30" aria-hidden />
         <main className="relative z-10 w-full max-w-xl mx-4 text-center text-white">
           <h1 className="text-3xl font-semibold mb-4">¡Hola, {user.nombre}!</h1>
@@ -94,8 +92,8 @@ export default function AuthPage() {
   // --- Si no hay sesión, mostrar formulario ---
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: `url(${bg})` }}
+      className="min-h-screen flex items-center justify-center bg-cover bg-center auth-bg"
+      style={{ "--bg-image": `url(${bg})` } as React.CSSProperties & { "--bg-image": string }}
     >
       <div className="absolute inset-0 bg-black/30" aria-hidden />
 
