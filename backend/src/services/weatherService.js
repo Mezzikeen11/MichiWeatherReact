@@ -3,70 +3,103 @@ const db = require("../config/db");
 
 const API_KEY = process.env.OPENWEATHER_KEY;
 
+// Cache en memoria (mucho más rápido)
+const memoryCache = {};
+
+const axiosInstance = axios.create({
+  timeout: 8000, // 8 segundos
+});
+
+const normalizarCiudad = (ciudad) =>
+  ciudad.trim().toLowerCase();
+
 const obtenerClima = async (ciudad) => {
+  const ciudadKey = normalizarCiudad(ciudad);
+  const ahora = Date.now();
+
+  // 1️⃣ Cache en memoria
+  if (
+    memoryCache[ciudadKey] &&
+    ahora - memoryCache[ciudadKey].time < 10 * 60 * 1000
+  ) {
+    return memoryCache[ciudadKey].data;
+  }
+
+  // 2️⃣ Cache en DB
+  const cached = await db("cache")
+    .where("ciudad", ciudadKey)
+    .andWhere("expiracion", ">", new Date())
+    .first();
+
+  if (cached) {
+    const data = JSON.parse(cached.datos);
+    memoryCache[ciudadKey] = { data, time: ahora };
+    return data;
+  }
+
   try {
-    // Revisar caché
-    const cached = await db("cache")
-      .where("ciudad", ciudad)
-      .andWhere("expiracion", ">", new Date())
-      .first();
-
-    if (cached) return JSON.parse(cached.datos);
-
-    // Obtener coordenadas de la ciudad
-    const geoResp = await axios.get(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${ciudad}&limit=1&appid=${API_KEY}`
+    // 3️⃣ Geocoding
+    const geoResp = await axiosInstance.get(
+      "https://api.openweathermap.org/geo/1.0/direct",
+      {
+        params: {
+          q: ciudadKey,
+          limit: 1,
+          appid: API_KEY,
+        },
+      }
     );
 
-    if (!geoResp.data || geoResp.data.length === 0) {
+    if (!geoResp.data.length) {
       throw new Error("Ciudad no encontrada");
     }
 
     const { lat, lon, name } = geoResp.data[0];
 
-    // Llamar a One Call API
-    const response = await axios.get(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&units=metric&appid=${API_KEY}`
+    // 4️⃣ Clima
+    const climaResp = await axiosInstance.get(
+      "https://api.openweathermap.org/data/3.0/onecall",
+      {
+        params: {
+          lat,
+          lon,
+          units: "metric",
+          exclude: "minutely,alerts",
+          appid: API_KEY,
+        },
+      }
     );
 
-    // Combinar datos con nombre y coordenadas
-    const datos = { ...response.data, name, lat, lon };
+    const datos = { ...climaResp.data, name, lat, lon };
 
-    // Guardar en consultas
-    await db("consultas").insert({
-      ciudad,
+    // 5️⃣ Guardar consulta (NO crítica)
+    db("consultas").insert({
+      ciudad: ciudadKey,
       lat,
       lon,
       respuesta: JSON.stringify(datos),
-    });
+    }).catch(() => {});
 
-    // Calcular expiración de cache
-    const expiracion = new Date();
-    expiracion.setMinutes(expiracion.getMinutes() + 10);
+    // 6️⃣ Cache DB
+    const expiracion = new Date(Date.now() + 10 * 60 * 1000);
 
-    // Insertar o actualizar cache
-    const existeCache = await db("cache").where("ciudad", ciudad).first();
-    if (existeCache) {
-      await db("cache")
-        .where("ciudad", ciudad)
-        .update({
-          datos: JSON.stringify(datos),
-          expiracion,
-        });
-    } else {
-      await db("cache").insert({
-        ciudad,
+    await db("cache")
+      .insert({
+        ciudad: ciudadKey,
         datos: JSON.stringify(datos),
         expiracion,
-      });
-    }
+      })
+      .onConflict("ciudad")
+      .merge();
 
-    // Retornar **exactamente** el JSON de One Call
+    // 7️⃣ Cache memoria
+    memoryCache[ciudadKey] = { data: datos, time: ahora };
+
     return datos;
 
   } catch (error) {
-    console.error("Error obteniendo clima:", error.message);
-    throw new Error("No se pudo obtener la información del clima");
+    console.error("❌ Clima error:", error.message);
+    throw new Error("Clima no disponible");
   }
 };
 
