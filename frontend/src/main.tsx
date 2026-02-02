@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WeatherPage from "./pages/WeatherPage";
 import AuthPage from "./pages/AuthPage";
+import SelectCatPage from "./pages/SelectCat/SelectCat";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/" element={<WeatherPage />} />
           <Route path="/perfil" element={<AuthPage />} />
+          <Route path="/select-cat" element={<SelectCatPage />} />
           <Route path="/weather/:city" element={<WeatherPage />} />
         </Routes>
       </main>
