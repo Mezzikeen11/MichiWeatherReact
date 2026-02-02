@@ -5,7 +5,6 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WeatherPage from "./pages/WeatherPage";
-import Nosotros from "./pages/Nosotros";
 import AuthPage from "./pages/AuthPage";
 import Adoptalos from "./pages/Adoptalos"; 
 import Nosotros from "./pages/Nosotros";
