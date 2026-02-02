@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import WeatherCard from "../components/WeatherCard";
 import ForecastHourly from "../components/ForecastHourly";
 import ForecastWeekly from "../components/ForecastWeekly";
@@ -7,6 +7,8 @@ import Stats from "../components/Stats";
 
 import { getWeatherByCityName} from "../services/weatherApi";
 import { normalizeWeather } from "../utils/normalizeWeather";
+import { useCat } from "../context/CatContext";
+
 
 type City = {
   id: string;
@@ -23,11 +25,17 @@ type City = {
 };
 
 export default function WeatherPage() {
+  const { selectedCat } = useCat();
   const params = useParams<{ city?: string }>();
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"hoy" | "semana">("hoy");
   const [city, setCity] = useState<City | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); 
+
+  if (!selectedCat) {
+  return <Navigate to="/select-cat" replace />;
+}
+
 
   async function loadByName(name: string) {
     try {
@@ -65,7 +73,16 @@ export default function WeatherPage() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[var(--dark)] dark:text-[var(--white)]"></h2>
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[var(--accent)]"></h3>
         </div>
-
+        <div className="flex items-center gap-4 mb-4">
+          <img
+            src={selectedCat.image}
+            alt={selectedCat.name}
+            className="w-16 h-16 rounded-full"
+          />
+          <span className="font-semibold text-lg">
+            {selectedCat.name} te da el clima 🐾
+          </span>
+        </div>
         <div className="flex justify-center w-full">
           <WeatherCard
             location={city.location}
