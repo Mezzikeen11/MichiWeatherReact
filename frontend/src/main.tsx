@@ -18,7 +18,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/" element={<WeatherPage />} />
           <Route path="/perfil" element={<AuthPage />} />
-          <Route path="/select-cat" element={<SelectCatPage />} />
+          <Route path="/select-michi" element={<SelectCatPage />} />
           <Route path="/weather/:city" element={<WeatherPage />} />
         </Routes>
       </main>
