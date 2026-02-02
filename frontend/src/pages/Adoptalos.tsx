@@ -19,7 +19,7 @@ interface Cat {
 }
 
 const catsData: Cat[] = [
-  { id: 1, nombre: "Luna", edad: 2, sexo: "Hembra", ciudad: "Cancún", imagen: Gato1, descripcion: "Gatita de temperamento equilibrado, muy sociable con personas y otros animales." },
+  { id: 1, nombre: "Geraldine", edad: 2, sexo: "Hembra", ciudad: "Cancún", imagen: Gato1, descripcion: "Ahí la lleva, a veces sabe lo que hace y otras veces no." },
   { id: 2, nombre: "Milly", edad: 3, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato2, descripcion: "Ejemplar independiente y tranquilo. Prefiere ambientes calmados y es muy dócil." },
   { id: 3, nombre: "Joe", edad: 1, sexo: "Hembra", ciudad: "Cancún", imagen: Gato3, descripcion: "Joven y llena de energía. Requiere estimulación física y espacio para jugar." },
   { id: 4, nombre: "Felix", edad: 4, sexo: "Macho", ciudad: "Tulum", imagen: Gato4, descripcion: "Gato rescatado sumamente leal. Posee salud completa y busca un hogar definitivo." },
