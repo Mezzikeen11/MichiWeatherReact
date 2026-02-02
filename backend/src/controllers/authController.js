@@ -47,7 +47,8 @@ const login = async (req, res) => {
       token,
       nombre: user.nombre,     // ...
       email: user.email,       // ...
-      id: user.id              
+      id: user.id,  
+      michi: user.michi            
     });
 
   } catch (error) {
@@ -56,4 +57,21 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const setMichi = async (req, res) => {
+  try {
+    const { michi } = req.body;
+    const userId = req.user.id; // viene del token
+
+    await db("usuarios")
+      .where({ id: userId })
+      .update({ michi });
+
+    res.json({ message: "Michi guardado correctamente" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Error al guardar michi" });
+  }
+};
+
+
+module.exports = { register, login, setMichi };

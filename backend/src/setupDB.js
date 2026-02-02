@@ -11,11 +11,19 @@ const setup = async () => {
         table.string("nombre");
         table.string("email").unique();
         table.string("password");
+        table.string("michi");
         table.timestamp("creado").defaultTo(db.fn.now());
       });
       console.log("✅ Tabla usuarios creada");
     }
-
+//---------------- michis ----------------
+      const tieneMichi = await db.schema.hasColumn("usuarios", "michi");
+      if (!tieneMichi) {
+        await db.schema.table("usuarios", (table) => {
+          table.string("michi");
+        });
+        console.log("✅ Columna michi agregada a usuarios");
+      }
     // ---------------- CONSULTAS ----------------
     const existeConsultas = await db.schema.hasTable("consultas");
     if (!existeConsultas) {
