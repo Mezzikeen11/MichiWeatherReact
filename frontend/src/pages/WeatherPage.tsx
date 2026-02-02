@@ -36,6 +36,7 @@ export default function WeatherPage() {
 
   async function loadByName(name: string) {
   try {
+    if (loading) return;
     setLoading(true);
     setShowLoader(true); // 🐱 mostrar LoaderCat
 
@@ -43,7 +44,7 @@ export default function WeatherPage() {
     const norm = normalizeWeather({ raw, cityName });
 
     // Aseguramos que el loader se muestre al menos 5 segundos
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     setCity(norm);
     navigate(`/weather/${encodeURIComponent(cityName)}`, { replace: true });
