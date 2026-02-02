@@ -18,7 +18,7 @@ export default function CatGallery() {
 
   const handleSelect = (cat: Cat) => {
     selectCat(cat);
-    navigate("/weather"); // o a donde vaya tu clima
+    navigate("/weather/:city"); // o a donde vaya tu clima
   };
 
   return (
