@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiUser, FiMenu, FiMoon, FiSun, FiX, FiSearch } from "react-icons/fi";
 import SearchBar from "./SearchBar";
@@ -8,7 +8,9 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [locOpen, setLocOpen] = useState(false);
+  const [mobileLocOpen, setMobileLocOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const locTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [dark, setDark] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -18,15 +20,16 @@ export default function Navbar() {
   // 🔹 Selección desde SearchBar
   const handleSelectCity = (cityName: string) => {
     navigate(`/weather/${encodeURIComponent(cityName)}`);
-    setMenuOpen(false);   // 👈 cerrar hamburguesa
-    setSearchOpen(false); // 👈 cerrar modal búsqueda
+    setMenuOpen(false);
+    setSearchOpen(false);
   };
 
   // 🔹 Selección desde ubicaciones recomendadas
   const handleSelectRecommended = (locQuery: string) => {
     navigate(`/weather/${encodeURIComponent(locQuery)}`);
     setLocOpen(false);
-    setMenuOpen(false); // 👈 cerrar hamburguesa
+    setMobileLocOpen(false);
+    setMenuOpen(false);
   };
 
   return (
@@ -39,7 +42,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-6 ml-6">
+          <nav className="hidden lg:flex items-center gap-8 ml-6">
             <Link
               to="/"
               className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
@@ -47,12 +50,20 @@ export default function Navbar() {
               Inicio
             </Link>
 
-            {/* Ubicaciones */}
-            <div className="relative">
-              <button
-                onClick={() => setLocOpen((s) => !s)}
-                className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
-              >
+            {/* Ubicaciones - CON HOVER Y DELAY */}
+            <div 
+              className="relative"
+              onMouseEnter={() => {
+                if (locTimeout.current) clearTimeout(locTimeout.current);
+                setLocOpen(true);
+              }}
+              onMouseLeave={() => {
+                locTimeout.current = setTimeout(() => {
+                  setLocOpen(false);
+                }, 200);
+              }}
+            >
+              <button className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition">
                 Ubicaciones
               </button>
 
@@ -76,6 +87,13 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+
+            <Link to="/adoptalos"
+              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
+            >
+              Adoptalos
+            </Link>
+
           </nav>
         </div>
 
@@ -149,26 +167,35 @@ export default function Navbar() {
             Inicio
           </Link>
 
+          {/* Ubicaciones MOBILE - CON CLICK */}
           <button
-            onClick={() => setLocOpen((s) => !s)}
-            className="block font-medium hover:text-[var(--accent)] transition text-left"
+            onClick={() => setMobileLocOpen(!mobileLocOpen)}
+            className="block font-medium hover:text-[var(--accent)] transition text-left w-full"
           >
             Ubicaciones
           </button>
 
-          {locOpen && (
+          {mobileLocOpen && (
             <div className="pl-4">
               {recommendedLocations.map((loc, i) => (
                 <button
                   key={i}
                   onClick={() => handleSelectRecommended(loc.name)}
-                  className="block py-2 text-sm"
+                  className="block py-2 text-sm hover:text-[var(--accent)] transition"
                 >
                   {loc.name}
                 </button>
               ))}
             </div>
           )}
+
+          <Link
+            to="/adoptalos"
+            className="block font-medium hover:text-[var(--accent)] transition"
+          >
+            
+            Adoptalos
+          </Link>
         </div>
       )}
 
