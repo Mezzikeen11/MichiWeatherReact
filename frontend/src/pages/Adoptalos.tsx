@@ -3,10 +3,19 @@ import { FiX, FiEye, FiCheckCircle, FiMapPin, FiSend, FiHeart } from "react-icon
 import { motion, AnimatePresence } from "framer-motion";
 import Gato1 from "../assets/Adoptar/Gato1.jpg";
 import Gato2 from "../assets/Adoptar/Gato2.jpg";
-import Gato3 from "../assets/Adoptar/Gato3.jpg";
-import Gato4 from "../assets/Adoptar/Gato4.jpg";
-import Gato5 from "../assets/Adoptar/Gato5.png";
-import Gato6 from "../assets/Adoptar/Gato6.jpg";
+import Gato3 from "../assets/Adoptar/Gato3.jpeg";
+import Gato4 from "../assets/Adoptar/Gato4.webp";
+import Gato5 from "../assets/Adoptar/Gato5.jpg";
+import Gato6 from "../assets/Adoptar/Gato6.webp";
+import Gato7 from "../assets/Adoptar/Gato7.webp";
+import Gato8 from "../assets/Adoptar/Gato8.jpg";
+import Gato9 from "../assets/Adoptar/Gato9.webp";
+import Gato10 from "../assets/Adoptar/Gato10.jpg";
+import Gato11 from "../assets/Adoptar/Gato11.avif";
+import Gato12 from "../assets/Adoptar/Gato12.jpg";
+
+
+
 
 interface Cat {
   id: number;
@@ -19,18 +28,18 @@ interface Cat {
 }
 
 const catsData: Cat[] = [
-  { id: 1, nombre: "Geraldine", edad: 2, sexo: "Hembra", ciudad: "Cancún", imagen: Gato1, descripcion: "Ahí la lleva, a veces sabe lo que hace y otras veces no." },
+  { id: 1, nombre: "Canela", edad: 2, sexo: "Hembra", ciudad: "Cancún", imagen: Gato1, descripcion: "Pendiente." },
   { id: 2, nombre: "Milly", edad: 3, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato2, descripcion: "Ejemplar independiente y tranquilo. Prefiere ambientes calmados y es muy dócil." },
   { id: 3, nombre: "Joe", edad: 1, sexo: "Hembra", ciudad: "Cancún", imagen: Gato3, descripcion: "Joven y llena de energía. Requiere estimulación física y espacio para jugar." },
   { id: 4, nombre: "Felix", edad: 4, sexo: "Macho", ciudad: "Tulum", imagen: Gato4, descripcion: "Gato rescatado sumamente leal. Posee salud completa y busca un hogar definitivo." },
   { id: 5, nombre: "Jerry", edad: 2, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato5, descripcion: "Destaca por su docilidad y búsqueda de afecto. Se integra bien a familias con niños." },
-  { id: 6, nombre: "Tom", edad: 1, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Explorador por naturaleza y muy valiente. Ideal para una familia activa." },
+  { id: 6, nombre: "Tom", edad: 1, sexo: "Macho", ciudad: "Cancún", imagen: Gato7, descripcion: "Explorador por naturaleza y muy valiente. Ideal para una familia activa." },
   { id: 7, nombre: "Coco", edad: 5, sexo: "Hembra", ciudad: "Cancún", imagen: Gato6, descripcion: "Gatita madura y muy educada, busca un hogar tranquilo." },
-  { id: 8, nombre: "Nala", edad: 3, sexo: "Hembra", ciudad: "Tulum", imagen: Gato6, descripcion: "Tímida al principio, pero una vez que confía es puro amor." },
-  { id: 9, nombre: "Simba", edad: 1, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Un pequeño cachorro lleno de vida y ganas de jugar." },
-  { id: 10, nombre: "Pixel", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato6, descripcion: "Le encantan las alturas, siempre vigilando desde lo más alto." },
-  { id: 11, nombre: "Milo", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Sociable por naturaleza, se lleva bien con otros gatitos." },
-  { id: 12, nombre: "Bibi", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato6, descripcion: "Ronronea en cuanto la miras, es cariñosa y busca mimos." },
+  { id: 8, nombre: "Nala", edad: 3, sexo: "Hembra", ciudad: "Tulum", imagen: Gato8, descripcion: "Tímida al principio, pero una vez que confía es puro amor." },
+  { id: 9, nombre: "Simba", edad: 1, sexo: "Macho", ciudad: "Cancún", imagen: Gato9, descripcion: "Un pequeño cachorro lleno de vida y ganas de jugar." },
+  { id: 10, nombre: "Pixel", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato10, descripcion: "Le encantan las alturas, siempre vigilando desde lo más alto." },
+  { id: 11, nombre: "Milo", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato11, descripcion: "Sociable por naturaleza, se lleva bien con otros gatitos." },
+  { id: 12, nombre: "Bibi", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato12, descripcion: "Ronronea en cuanto la miras, es cariñosa y busca mimos." },
 ];
 
 export default function Adoptalos() {
