@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Navigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import WeatherCard from "../components/WeatherCard";
 import ForecastHourly from "../components/ForecastHourly";
 import ForecastWeekly from "../components/ForecastWeekly";
 import Stats from "../components/Stats";
 
-import { getWeatherByCityName} from "../services/weatherApi";
+import { getWeatherByCityName } from "../services/weatherApi";
 import { normalizeWeather } from "../utils/normalizeWeather";
 import { useCat } from "../context/CatContext";
-
 
 type City = {
   id: string;
@@ -28,23 +27,21 @@ export default function WeatherPage() {
   const { selectedCat } = useCat();
   const params = useParams<{ city?: string }>();
   const navigate = useNavigate();
+
   const [viewMode, setViewMode] = useState<"hoy" | "semana">("hoy");
   const [city, setCity] = useState<City | null>(null);
-  const [loading, setLoading] = useState(false); 
-
-  if (!selectedCat) {
-  return <Navigate to="/select-cat" replace />;
-}
-
+  const [loading, setLoading] = useState(false);
 
   async function loadByName(name: string) {
     try {
       setLoading(true);
+
       const { raw, cityName } = await getWeatherByCityName(name);
       const norm = normalizeWeather({ raw, cityName });
-      console.log("HOURLY:", norm.hourly);
+
       setCity(norm);
 
+      // Mantener URL bonita con /weather/:city
       navigate(`/weather/${encodeURIComponent(cityName)}`, { replace: true });
     } catch (err) {
       console.error(err);
@@ -55,12 +52,23 @@ export default function WeatherPage() {
   }
 
   useEffect(() => {
+    // ✅ IMPORTANTE: no cortar hooks antes, redirigir aquí
+    if (!selectedCat) {
+      navigate("/select-cat", { replace: true });
+      return;
+    }
+
+    // Si hay gato, cargamos ciudad
     if (params.city) {
       loadByName(decodeURIComponent(params.city));
     } else {
       loadByName("Cancún, MX");
     }
-  }, [params.city]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.city, selectedCat]);
+
+  // Mientras se redirige (evita flicker)
+  if (!selectedCat) return null;
 
   if (loading || !city) {
     return <main className="container-michi">Cargando...</main>;
@@ -73,6 +81,8 @@ export default function WeatherPage() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[var(--dark)] dark:text-[var(--white)]"></h2>
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[var(--accent)]"></h3>
         </div>
+
+        {/* 🐾 Michi seleccionado */}
         <div className="flex items-center gap-4 mb-4">
           <img
             src={selectedCat.image}
@@ -83,6 +93,7 @@ export default function WeatherPage() {
             {selectedCat.name} te da el clima 🐾
           </span>
         </div>
+
         <div className="flex justify-center w-full">
           <WeatherCard
             location={city.location}
