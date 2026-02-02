@@ -14,22 +14,22 @@ interface Cat {
   sexo: "Macho" | "Hembra";
   ciudad: string;
   imagen: string;
-  descripcion: string;
+  personalidad: string;
 }
 
 const catsData: Cat[] = [
-  { id: 1, nombre: "Luna", edad: 2, sexo: "Hembra", ciudad: "Cancún", imagen: Gato1, descripcion: "Luna es una gatita juguetona y cariñosa" },
-  { id: 2, nombre: "Milly", edad: 3, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato2, descripcion: "Milly es tranquilo y le encanta acurrucarse" },
-  { id: 3, nombre: "Joe", edad: 1, sexo: "Hembra", ciudad: "Cancún", imagen: Gato3, descripcion: "Joe es pequeña pero muy audaz" },
-  { id: 4, nombre: "Felix", edad: 4, sexo: "Macho", ciudad: "Tulum", imagen: Gato4, descripcion: "Felix es un gatito muy curioso" },
-  { id: 5, nombre: "Jerry", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato5, descripcion: "Jerry es dulce y amorosa" },
-  { id: 6, nombre: "Tom", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Tom es activo y juguetón" },
-  { id: 7, nombre: "Tom", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Tom es activo y juguetón" },
-  { id: 8, nombre: "Tom", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Tom es activo y juguetón" },
-  { id: 9, nombre: "Tom", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Tom es activo y juguetón" },
-  { id: 10, nombre: "Tom", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Tom es activo y juguetón" },
-  { id: 11, nombre: "Tom", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Tom es activo y juguetón" },
-  { id: 12, nombre: "Tom", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, descripcion: "Tom es activo y juguetón" },
+  { id: 1, nombre: "Luna", edad: 2, sexo: "Hembra", ciudad: "Cancún", imagen: Gato1, personalidad: "Juguetona" },
+  { id: 2, nombre: "Milly", edad: 3, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato2, personalidad: "Tranquila" },
+  { id: 3, nombre: "Joe", edad: 1, sexo: "Hembra", ciudad: "Cancún", imagen: Gato3, personalidad: "Audaz" },
+  { id: 4, nombre: "Felix", edad: 4, sexo: "Macho", ciudad: "Tulum", imagen: Gato4, personalidad: "Curioso" },
+  { id: 5, nombre: "Jerry", edad: 2, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato5, personalidad: "Dulce" },
+  { id: 6, nombre: "Tom", edad: 1, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, personalidad: "Activo" },
+  { id: 7, nombre: "Coco", edad: 5, sexo: "Hembra", ciudad: "Cancún", imagen: Gato6, personalidad: "Cariñosa" },
+  { id: 8, nombre: "Nala", edad: 3, sexo: "Hembra", ciudad: "Tulum", imagen: Gato6, personalidad: "Timida" },
+  { id: 9, nombre: "Simba", edad: 1, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, personalidad: "Miedoso" },
+  { id: 10, nombre: "Nala", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato6, personalidad: "Sociable" },
+  { id: 11, nombre: "Milo", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato6, personalidad: "Curioso" },
+  { id: 12, nombre: "Bibi", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato6, personalidad: "Cariñosa" },
 ];
 
 export default function Adoptalos() {
@@ -151,8 +151,11 @@ export default function Adoptalos() {
                     <p><span className="font-bold">Edad:</span> {cat.edad} {cat.edad === 1 ? "año" : "años"}</p>
                     <p><span className="font-bold">Sexo:</span> {cat.sexo}</p>
                     <p><span className="font-bold">Ciudad:</span> {cat.ciudad}</p>
-                  </div>
-                  <p className="text-sm text-[#4a7c4a] mb-6 italic">"{cat.descripcion}"</p>
+                  
+                    <p><span className="font-bold">Personalidad:</span> {cat.personalidad}</p>
+
+                    </div>
+
                   <button className="w-full py-3 bg-[#2d7a2d] hover:bg-[#235e23] text-white font-bold rounded-xl transition-colors shadow-sm">
                     Adoptar
                   </button>
