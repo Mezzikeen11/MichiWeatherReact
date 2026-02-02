@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WeatherPage from "./pages/WeatherPage";
+import Nosotros from "./pages/Nosotros";
 import AuthPage from "./pages/AuthPage";
 import Adoptalos from "./pages/Adoptalos"; 
 import Nosotros from "./pages/Nosotros";
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/adoptalos" element={<Adoptalos />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/select-cat" element={<SelectCatPage />} />
+          <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/weather/:city" element={<WeatherPage />} />
         </Routes>
       </main>
