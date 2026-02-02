@@ -47,8 +47,9 @@ export default function Footer() {
           {[
             { name: 'Maritza', url: 'https://github.com/Mezzikeen11' },
             { name: 'Noemi', url: 'https://github.com/NoemiPuerto' },
-            { name: 'Luz', url: 'https://github.com/LuzElizabeeth' },
-            { name: 'Eduardo', url: 'https://github.com/Atkis1' },
+            { name: 'Geraldine', url: 'https://www.youtube.com/watch?v=RZHi6agHUcQ' },
+            { name: 'Pedro', url: 'https://github.com/Tubiruchi' },
+            { name: 'Gilberto', url: 'https://preview.redd.it/ucv34e0c4q061.png?width=640&crop=smart&auto=webp&s=d7205528f9553dba539db7ac8c30dbbd6efcdb6b' },
           ].map((dev) => (
             <a
               key={dev.name}

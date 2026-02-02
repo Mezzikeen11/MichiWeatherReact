@@ -94,6 +94,12 @@ export default function Navbar() {
               Adoptalos
             </Link>
 
+            <Link to="/nosotros"
+              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
+            >
+              Nosotros
+            </Link>
+
           </nav>
         </div>
 
@@ -196,6 +202,15 @@ export default function Navbar() {
             
             Adoptalos
           </Link>
+
+          <Link
+            to="/nosotros"
+            className="block font-medium hover:text-[var(--accent)] transition"
+            onClick={() => setMenuOpen(false)}
+          >
+            Nosotros
+          </Link>
+      
         </div>
       )}
 
