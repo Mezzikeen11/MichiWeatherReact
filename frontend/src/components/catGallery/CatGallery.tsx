@@ -1,15 +1,15 @@
-import amber from "../../assets/GallerySelectMichi/Amber.png";
+import Misha from "../../assets/GallerySelectMichi/Misha.png";
 import kuro from "../../assets/GallerySelectMichi/Kuro.png";
-import mandarina from "../../assets/GallerySelectMichi/Mandarina.png";
+import aurora from "../../assets/GallerySelectMichi/Aurora.png";
 import { useNavigate } from "react-router-dom";
 import { useCat } from "../../context/CatContext";
 import { type Cat } from "../../types/cat";
 import "./CatGallery.scss";
 
 const cats: Cat[] = [
-  { id: "Amber", name: "Amber", image: amber },
+  { id: "Misha", name: "Misha", image: Misha },
   { id: "Kuro", name: "Kuro", image: kuro },
-  { id: "Mandarina", name: "Mandarina", image: mandarina },
+  { id: "Aurora", name: "Aurora", image: aurora },
 ];
 
 export default function CatGallery() {
