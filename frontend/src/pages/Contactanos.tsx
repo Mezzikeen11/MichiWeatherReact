@@ -48,6 +48,7 @@ export default function Contactanos() {
   };
 
   const handleSubmit = (e: any) => {
+    console.log("a");
   e.preventDefault()
   if (validate()) {
     setShowModal(true)
