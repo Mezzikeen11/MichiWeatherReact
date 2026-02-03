@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { FocusField } from "./auth.types";
 import { registerUser } from "../../services/authApi";
 
@@ -7,11 +8,11 @@ type Props = {
 };
 
 export default function RegisterForm({ setFocus }: Props) {
+  const navigate = useNavigate(); // 👈
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -21,7 +22,9 @@ export default function RegisterForm({ setFocus }: Props) {
 
     try {
       await registerUser(nombre, email, password);
-      setSuccess(true);
+
+      // 🚀 REGISTRO → CAT GALLERY
+      navigate("/select-cat");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -83,11 +86,6 @@ export default function RegisterForm({ setFocus }: Props) {
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
-      {success && (
-        <p className="text-sm text-green-600">
-          Registro exitoso. Ahora puedes iniciar sesión.
-        </p>
-      )}
 
       <button
         type="submit"

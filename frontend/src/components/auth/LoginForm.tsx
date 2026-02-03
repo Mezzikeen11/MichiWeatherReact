@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { FocusField } from "./auth.types";
 import { loginUser } from "../../services/authApi";
 
@@ -7,6 +8,7 @@ type Props = {
 };
 
 export default function LoginForm({ setFocus }: Props) {
+  const navigate = useNavigate(); // 👈
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +32,8 @@ export default function LoginForm({ setFocus }: Props) {
         })
       );
 
-      // 🚀 redirección la manejará otra compañera
+      // 🚀 REDIRECCIÓN DIRECTA A CAT GALLERY
+      navigate("/select-cat");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -74,9 +77,7 @@ export default function LoginForm({ setFocus }: Props) {
         />
       </div>
 
-      {error && (
-        <p className="text-sm text-red-600">{error}</p>
-      )}
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <button
         type="submit"
@@ -88,4 +89,3 @@ export default function LoginForm({ setFocus }: Props) {
     </form>
   );
 }
-
