@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import banner from "../assets/Nosotros/banner.png";
+import banner from "../assets/Nosotros/GATOS.png";
 import { Link } from "react-router-dom";
 
 export default function Nosotros() {
