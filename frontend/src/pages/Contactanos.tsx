@@ -11,6 +11,16 @@ export default function Contactanos() {
   const [errors, setErrors]: any = useState({});
   const [showModal, setShowModal] = useState(false)
 
+  const hours = [
+    { day: "Lunes", time: "11:00 AM – 9:00 PM" },
+    { day: "Martes", time: "11:00 AM – 9:00 PM" },
+    { day: "Miércoles", time: "11:00 AM – 9:00 PM" },
+    { day: "Jueves", time: "11:00 AM – 9:00 PM" },
+    { day: "Viernes", time: "11:00 AM – 9:00 PM" },
+    { day: "Sábado", time: "11:00 AM – 9:00 PM" },
+    { day: "Domingo", time: "Cerrado", closed: true },
+  ]
+
 
   const MAX_MESSAGE_LENGTH = 500;
 
@@ -149,6 +159,41 @@ export default function Contactanos() {
       <section className="mt-8">
         <ContactCards />
       </section>
+
+      <section className="w-full max-w-md mx-auto mt-16 px-4">
+      {/* TÍTULO */}
+      <div className="bg-[var(--panel)] rounded-2xl p-6 shadow-michi-1">
+      <h3 className="text-lg font-bold text-[var(--text-main)] mb-6 text-center">
+        Horarios de atención
+      </h3>
+
+      {/* LISTA */}
+      <div className="flex flex-col gap-4">
+        {hours.map((h, idx) => (
+          <div key={idx} className="flex items-center gap-3">
+            {/* DÍA */}
+            <span className="w-24 text-sm font-medium text-[var(--text-main)]">
+              {h.day}
+            </span>
+
+            {/* LÍNEA */}
+            <div className="flex-1 h-px bg-[var(--text-muted)]/30" />
+
+            {/* HORARIO */}
+            <span
+              className={`text-sm font-medium ${
+                h.closed
+                  ? "text-red-500"
+                  : "text-[var(--text-muted)]"
+              }`}
+            >
+              {h.time}
+            </span>
+          </div>
+        ))}
+      </div>
+      </div>
+    </section>
 
       {showModal && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
