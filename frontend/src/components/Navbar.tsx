@@ -100,12 +100,6 @@ export default function Navbar() {
               Nosotros
             </Link>
 
-            <Link to="/contactanos"
-              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
-            >
-              Contáctanos
-            </Link>
-
           </nav>
         </div>
 
