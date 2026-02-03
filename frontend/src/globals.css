@@ -7,6 +7,7 @@
 
 :root {
 --bg: #F7FBF4;
+--tx: #000000;
 --panel: #E4F3DC;
 --panel2: #F6FBF5;
 --accent: #2E7D1E;
@@ -15,6 +16,7 @@
 --white: #ffffff;
 --glass: rgba(104, 104, 104, 0.06);
 --border: 1px solid rgba(255, 255, 255, 0.2);
+--da: #ceecc671;
 
 }
 
@@ -25,6 +27,7 @@
 [data-theme='dark'] {
 
 --bg: #09160f;
+--tx: #ffffff;
 --panel: #0a4d28;
 --panel2:#156b3c;
 --accent: #1c9d1c;
@@ -32,6 +35,7 @@
 --white: #F2F7F1;
 --glass: rgba(255,255,255,0.04);
 --border: 1px solid rgba(32, 65, 18, 0.2);
+--da: #437154;
 
 
 }
@@ -365,12 +369,12 @@ border-bottom-color: #2e7d32;
 
 .adoptalos-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 3rem auto;
   padding: 0 1.5rem;
 }
 
 .adoptalos-header {
-  margin-bottom: 3rem;
+  margin-bottom: rem;
   text-align: center;
 }
 
@@ -378,7 +382,7 @@ border-bottom-color: #2e7d32;
   font-size: 3.75rem;
   font-weight: 900;
   color: var(--dark);
-  margin-bottom: 1rem;
+  margin-bottom: rem;
   letter-spacing: -0.02em;
 }
 
@@ -522,7 +526,7 @@ border-bottom-color: #2e7d32;
 .adoptalos-card {
   position: relative;
   border-radius: 3rem;
-  background-color: var(--panel);
+  background-color: var(--panel2);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 248, 248, 0.2);
   overflow: visible;
@@ -530,7 +534,7 @@ border-bottom-color: #2e7d32;
 }
 
 .adoptalos-card-image-wrapper {
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 .adoptalos-card-image {
@@ -560,12 +564,12 @@ border-bottom-color: #2e7d32;
 .adoptalos-card-name {
   font-size: 1.875rem;
   font-weight: 900;
-  color: var(--dark);
+  color: var(--);
   margin-bottom: 1.5rem;
 }
 
 [data-theme='dark'] .adoptalos-card-name {
-  color: var(--white);
+  color: var(--);
 }
 
 .adoptalos-card-info-grid {
@@ -576,7 +580,7 @@ border-bottom-color: #2e7d32;
   font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--dark);
+  color: var(--tx);
 }
 
 [data-theme='dark'] .adoptalos-card-info-grid {
@@ -584,10 +588,10 @@ border-bottom-color: #2e7d32;
 }
 
 .adoptalos-card-info-item {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--da);
   padding: 0.75rem;
   border-radius: 1rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(193, 181, 181, 0.05);
 }
 
 .adoptalos-card-info-full {
@@ -711,7 +715,6 @@ border-bottom-color: #2e7d32;
   line-height: 1.5;
   margin-bottom: 1.5rem;
   font-weight: 500;
-  font-style: italic;
   border-left: 4px solid var(--accent);
   padding-left: 1rem;
 }
@@ -724,14 +727,9 @@ border-bottom-color: #2e7d32;
 .adoptalos-tooltip-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   color: var(--accent);
-  font-size: 0.6875rem;
+  font-size: .76rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .adoptalos-tooltip-arrow {
