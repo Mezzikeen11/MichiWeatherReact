@@ -1,0 +1,131 @@
+/* ================================
+   LOADER – GATO GIRATORIO AISLADO
+================================ */
+
+.loader-cat {
+  /* ---------------- Variables ---------------- */
+  $angleSpan: 40deg;
+  $dur: 2s;
+  $delayInc: $dur / 100;
+  $segments: 30;
+  $timing: cubic-bezier(0.6,0,0.4,1);
+  $playState: running;
+
+  /* Colores */
+  $w1: hsl(39, 19%, 27%); /* Color del cuerpo y pupilas */
+  $w1T: hsla(0, 100%, 35%, 0); 
+  $w2: hsl(41, 27%, 51%); /* Color del la panza */
+  $w2T: hsl(0, 59%, 42%);
+  $w3: hsl(0,0%,80%); /* Sombra */
+  $w3T: hsla(0, 100%, 39%, 0);
+  $bk: hsl(0, 0%, 0%);/* Ojoss */
+  $bkT: hsla(0, 0%, 0%, 0);
+  $pk: hsl(0,60%,75%);/* Nariz y orejas */
+  $pkT: hsla(0, 100%, 34%, 0);
+
+  /* ---------------- Wrapper ---------------- */
+  &__wrapper {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* ---------------- Cat ---------------- */
+  &__cat {
+    position: relative;
+    width: 16em;
+    height: 16em;
+    margin: auto;
+
+    &__segment {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 3em;
+      height: 2em;
+      transform: translate(-50%, -50%);
+
+      &:before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 0.25em;
+        background: linear-gradient(90deg, $w1 20%, $w2 20% 80%, $w1 80%);
+        animation: loop $dur $timing infinite $playState;
+        will-change: transform;
+      }
+
+      &:first-of-type {
+        width: 4em;
+        height: 4em;
+        z-index: 1;
+
+        &:before {
+          background:
+            radial-gradient(0.25em 0.25em at 1.25em 1.6em, $w1 48%, $w1T 50%),
+            radial-gradient(0.75em 0.75em at 1.25em 1.75em, $bk 48%, $bkT 50%),
+            radial-gradient(0.25em 0.25em at 2.75em 1.6em, $w1 48%, $w1T 50%),
+            radial-gradient(0.75em 0.75em at 2.75em 1.75em, $bk 48%, $bkT 50%),
+            radial-gradient(0.9em 0.8em at 1.5em 2.65em, $w1 48%, $w1T 50%),
+            radial-gradient(0.9em 0.8em at 2.5em 2.65em, $w1 48%, $w1T 50%),
+            radial-gradient(1em 0.8em at 1.6em 2.75em, $w3 48%, $w3T 50%),
+            radial-gradient(1em 0.8em at 2.4em 2.75em, $w3 48%, $w3T 50%),
+            radial-gradient(0.75em 0.75em at 50% 2.5em, $pk 48%, $pkT 50%),
+            radial-gradient(4em 3em at 50% 2em, $w1 48%, $w1T 50%),
+            radial-gradient(4em 3em at 50% 2.2em, $w3 48%, $w3T 50%),
+            radial-gradient(1em 3em at 0.75em 1.5em, $pk 39%, $w1 40% 49%, $w1T 50%),
+            radial-gradient(1em 3em at 3.25em 1.5em, $pk 39%, $w1 40% 49%, $w1T 50%),
+            radial-gradient(1em 2em at 0.5em 2.8em, $w1 48%, $w1T 50%),
+            radial-gradient(1em 2em at 0.5em 3em, $w3 48%, $w3T 50%),
+            radial-gradient(1em 2em at 3.5em 2.8em, $w1 48%, $w1T 50%),
+            radial-gradient(1em 2em at 3.5em 3em, $w3 48%, $w3T 50%);
+          background-repeat: no-repeat;
+        }
+      }
+
+      &:last-of-type {
+        width: 3em;
+        height: 4em;
+
+        &:before {
+          background:
+            linear-gradient(90deg, $w1 20%, $w2 20% 80%, $w1 80%) 0 1.5em / 3em 0.5em,
+            radial-gradient(3em 2em at top center, $w2 30%, $w1 31% 48%, $w1T 50%) 0 2em / 3em 2em,
+            radial-gradient(1em 4em at 0.5em 0, $w1 48%, $w1T 50%) 0 2em / 3em 2em,
+            radial-gradient(1em 4em at 2.5em 0, $w1 48%, $w1T 50%) 0 2em / 3em 2em;
+          background-repeat: no-repeat;
+        }
+      }
+    }
+  }
+
+  /* ---------------- Segment rotation y delay ---------------- */
+  $negAngleHalf: -$angleSpan / 2;
+  $angleInc: $angleSpan / $segments;
+
+  @for $s from 1 through $segments {
+    &__cat__segment:nth-of-type(#{$s}) {
+      transform: translate(-50%, -50%) rotate($negAngleHalf + $angleInc * ($s - 1));
+    }
+
+    &__cat__segment:nth-of-type(#{$s})::before {
+      animation-delay: $delayInc * ($s - 1);
+      transform: translateX(6em);
+    }
+  }
+
+  /* ---------------- Animación ---------------- */
+  @keyframes loop {
+    from {
+      transform: rotate(0) translateX(6em);
+    }
+    to {
+      transform: rotate(-1turn) translateX(6em);
+    }
+  }
+}

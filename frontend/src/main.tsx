@@ -1,6 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { CatProvider } from "./context/CatContext";
+
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -13,21 +16,23 @@ import Nosotros from "./pages/Nosotros";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Navbar />
-      <main className="min-h-screen pt-20 pb-5">
-        <Routes>
-          <Route path="/" element={<WeatherPage />} />
-          <Route path="/perfil" element={<AuthPage />} />
-          <Route path="/adoptalos" element={<Adoptalos />} />
+    <CatProvider>
+      <BrowserRouter>
+        <Navbar />
+        <main className="min-h-screen pt-20 pb-5">
+          <Routes>
+            <Route path="/" element={<WeatherPage />} />
+            <Route path="/perfil" element={<AuthPage />} />
+            <Route path="/adoptalos" element={<Adoptalos />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/select-cat" element={<SelectCatPage />} />
-          <Route path="/contactanos" element={<Contactanos />} />
+            <Route path="/contactanos" element={<Contactanos />} />
           <Route path="/weather/:city" element={<WeatherPage />} />
-
+  
         </Routes>
-      </main>
-      <Footer />
-    </BrowserRouter>
+        </main>
+        <Footer />
+      </BrowserRouter>
+    </CatProvider>
   </StrictMode>
 );
