@@ -99,6 +99,12 @@ export default function Navbar() {
             >
               Nosotros
             </Link>
+            
+            <Link to="/contactanos"
+              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
+            >
+              Contáctanos
+            </Link>
 
           </nav>
         </div>
@@ -209,6 +215,14 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
           >
             Nosotros
+          </Link>
+
+          <Link
+            to="/contactanos"
+            className="block font-medium hover:text-[var(--accent)] transition"
+          >
+            
+            Contáctanos
           </Link>
       
         </div>
