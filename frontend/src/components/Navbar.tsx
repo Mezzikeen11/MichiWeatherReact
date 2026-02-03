@@ -45,7 +45,7 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center gap-8 ml-6">
             <Link
               to="/"
-              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
+              className="font-semibold text-sm text-[var(--tx)] hover:text-[var(--accent)] transition"
             >
               Inicio
             </Link>
@@ -63,7 +63,7 @@ export default function Navbar() {
                 }, 200);
               }}
             >
-              <button className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition">
+              <button className="font-semibold text-sm text-[var(--tx)] hover:text-[var(--accent)] transition">
                 Ubicaciones
               </button>
 
@@ -89,19 +89,19 @@ export default function Navbar() {
             </div>
 
             <Link to="/adoptalos"
-              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
+              className="font-semibold text-sm text-[var(--tx)] transition"
             >
               Adoptalos
             </Link>
 
             <Link to="/nosotros"
-              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
+              className="font-semibold text-sm text-[var(--tx)] transition"
             >
               Nosotros
             </Link>
             
             <Link to="/contactanos"
-              className="font-semibold text-sm text-[var(--dark)] dark:text-[var(--white)] hover:text-[var(--accent)] transition"
+              className="font-semibold text-sm text-[var(--tx)] transition"
             >
               Contáctanos
             </Link>

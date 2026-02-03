@@ -107,7 +107,7 @@ export default function Nosotros() {
       {/* HERO */}
       <section className="w-full flex flex-col items-center justify-center text-center pt-14 pb-20 px-4">
         <div className="max-w-4xl">
-          <h1 className="mt-5 text-4xl sm:text-6xl font-extrabold tracking-tight text-[var(--dark)] dark:text-[var(--white)]">
+          <h1 className="mt-5 text-4xl sm:text-6xl font-extrabold tracking-tight text-[var(--tx)]">
             Creamos{" "}
             <span className="text-[var(--accent)]">
               {typed}
@@ -124,7 +124,7 @@ export default function Nosotros() {
             </span>
           </h1>
 
-          <p className="mt-5 text-base sm:text-lg text-[var(--dark)]/80 dark:text-[var(--white)]/80 leading-relaxed">
+          <p className="mt-5 text-base sm:text-lg text-[var(--tx)]/80 leading-relaxed">
             Un proyecto que te ayuda a consultar el clima rápido y, al mismo tiempo,
             impulsa la adopción responsable de gatitos.
           </p>

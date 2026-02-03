@@ -71,11 +71,11 @@ export default function Contactanos() {
     <main className="min-h-screen px-4 py-20">
       {/* TÍTULO */}
       <section className="max-w-4xl mx-auto text-center mb-14">
-        <h1 className="text-6xl font-black text-[#1a3a1a] dark:text-white mb-4 tracking-tight" style={{ fontFamily: 'inherit' }}>
+        <h1 className="text-6xl font-black text-[var(--tx)] mb-4 tracking-tight" style={{ fontFamily: 'inherit' }}>
           Contáctanos
         </h1>
-        <div className="h-1.5 w-24 bg-[#2d7a2d] mx-auto rounded-full mb-4" />
-        <p className="text-xl text-[#2d5a2d] dark:text-gray-400 font-medium" style={{ fontFamily: 'inherit' }}>
+        <div className="h-1.5 w-24 bg-[var(--accent)] mx-auto rounded-full mb-4" />
+        <p className="text-xl text-[var(--tx)] dark:text-gray-400 font-medium" style={{ fontFamily: 'inherit' }}>
            ¿Tienes dudas, ideas o quieres apoyar la adopción de michis?
         </p>
 
