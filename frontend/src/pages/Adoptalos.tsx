@@ -14,6 +14,7 @@ import Gato10 from "../assets/Adoptar/Gato10.jpg";
 import Gato11 from "../assets/Adoptar/Gato11.avif";
 import Gato12 from "../assets/Adoptar/Gato12.jpg";
 
+
 interface Cat {
 id: number;
 nombre: string;
@@ -89,8 +90,7 @@ setIsSent(false);
 };
 
 return (
-<div className="min-h-screen bg-gradient-to-b from-[#f0f9f0] to-[#ffffff] dark:from-[#0a1a0a] dark:to-[#000000] pt-4 pb-16 transition-all duration-500">
-<div className="max-w-7xl mx-auto px-6">
+  <div className="max-w-7xl mx-auto px-6">
 
 
 <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-12 text-center">
@@ -181,8 +181,7 @@ return (
 initial={{ opacity: 0, y: 30, scale: 0.95, x: "-50%" }}
 animate={{ opacity: 1, y: -360, scale: 1, x: "-50%" }}
 exit={{ opacity: 0, y: 30, scale: 0.95, x: "-50%" }}
-className="absolute left-1/2 w-[420px] z-[100] bg-white dark:bg-[#1a1a1a] p-8 rounded-[3rem] shadow-[0_40px_80px_rgba(0,0,0,0.2)] border border-green-100 pointer-events-none text-left"
-style={{ fontFamily: 'inherit' }}>
+className="absolute left-1/2 w-[420px] z-[100] bg-[var(--panel)] dark:bg-[var(--panel)] p-8 rounded-[3rem] shadow-[0_40px_80px_rgba(0,0,0,0.2)] border border-green-100 pointer-events-none text-left"style={{ fontFamily: 'inherit' }}>
 
 <div className="flex gap-6 items-center mb-6">
 <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-[#2d7a2d] shadow-lg flex-shrink-0">
@@ -271,7 +270,7 @@ className="absolute inset-0 bg-black/60 backdrop-blur-sm"
 initial={{ opacity: 0, scale: 0.9, y: 20 }}
 animate={{ opacity: 1, scale: 1, y: 0 }}
 exit={{ opacity: 0, scale: 0.9, y: 20 }}
-className="relative bg-white dark:bg-[#1a1a1a] w-full max-w-lg rounded-[3rem] shadow-2xl overflow-hidden min-h-[400px] flex items-center"
+className="relative bg-[var(--panel)] dark:bg-[var(--panel)] w-full max-w-lg rounded-[3rem] shadow-2xl overflow-hidden min-h-[400px] flex items-center"
 style={{ fontFamily: 'inherit' }}
 
 >
@@ -325,7 +324,7 @@ style={{ fontFamily: 'inherit' }}
 
 </AnimatePresence>
 </div>
-</div>
+
 
 );
 }
