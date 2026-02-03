@@ -113,6 +113,7 @@ export default function WeatherPage() {
             max={city.max}
             min={city.min}
             weatherCode={city.weatherCode}
+            selectedCatId={selectedCat?.id} // <-- aquí le pasamos el gato seleccionado
           />
         </div>
       </div>
