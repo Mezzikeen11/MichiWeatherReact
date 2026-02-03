@@ -8,8 +8,8 @@ import WeatherPage from "./pages/WeatherPage";
 import Nosotros from "./pages/Nosotros";
 import AuthPage from "./pages/AuthPage";
 import Adoptalos from "./pages/Adoptalos"; 
-import Nosotros from "./pages/Nosotros";
 import SelectCatPage from "./pages/SelectCat/SelectCat"; 
+import Contactanos from "./pages/Contactanos";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -23,7 +23,9 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/select-cat" element={<SelectCatPage />} />
           <Route path="/nosotros" element={<Nosotros />} />
+          <Route path="/contactanos" element={<Contactanos />} />
           <Route path="/weather/:city" element={<WeatherPage />} />
+
         </Routes>
       </main>
       <Footer />

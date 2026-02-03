@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import banner from "../assets/Nosotros/banner.png";
+import { Link } from "react-router-dom";
 
 export default function Nosotros() {
   const words = useMemo(() => ["pronósticos…", "compañía…", "hogares."], []);
@@ -17,6 +18,7 @@ export default function Nosotros() {
     "typing" | "pauseAfterType" | "deleting" | "pauseAfterDelete" | "done"
   >("typing");
   const [cursorOn, setCursorOn] = useState(true);
+
 
   const timerRef = useRef<number | null>(null);
   const cursorRef = useRef<number | null>(null);
@@ -254,15 +256,15 @@ export default function Nosotros() {
       ¿Te interesa formar parte del proyecto, colaborar con el equipo o apoyar a más michis a conseguir un hogar?
       Escríbenos y con gusto te respondemos.
     </p>
-
-    <p className="relative mt-5 text-sm sm:text-base font-semibold text-[var(--dark)] dark:text-[var(--white)]">
-      <a
-        href="mailto:Gilbertoms2004@gmail.com"
-        className="text-[var(--accent)] hover:underline"
-      >
-        Gilbertoms2004@gmail.com
-      </a>
-    </p>
+    <Link to="/contactanos">
+          <button
+            type="button"
+            className="mt-5 w-50 rounded-full bg-[var(--accent)] py-3 font-semibold text-white hover:opacity-90 transition"
+          >
+            Contáctanos
+          </button>
+    </Link>
+    
   </div>
 </section>
 
