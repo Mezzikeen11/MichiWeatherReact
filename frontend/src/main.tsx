@@ -21,7 +21,6 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/adoptalos" element={<Adoptalos />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/select-cat" element={<SelectCatPage />} />
-          <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/weather/:city" element={<WeatherPage />} />
         </Routes>
       </main>
