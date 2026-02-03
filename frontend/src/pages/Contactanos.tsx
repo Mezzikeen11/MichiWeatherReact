@@ -75,7 +75,7 @@ export default function Contactanos() {
           Contáctanos
         </h1>
         <div className="h-1.5 w-24 bg-[var(--accent)] mx-auto rounded-full mb-4" />
-        <p className="text-xl text-[var(--tx)] dark:text-gray-400 font-medium" style={{ fontFamily: 'inherit' }}>
+        <p className="text-xl text-[var(--)] dark:text-gray-400 font-medium" style={{ fontFamily: 'inherit' }}>
            ¿Tienes dudas, ideas o quieres apoyar la adopción de michis?
         </p>
 

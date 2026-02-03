@@ -25,18 +25,18 @@ interface Cat {
 }
 
 const catsData: Cat[] = [
-  { id: 1, nombre: "Geraldine", edad: 1, sexo: "Hembra", ciudad: "Cancún", imagen: Gato1, descripcion: "Suele distraerse con facilidad, y es un poco torpe" },
-  { id: 2, nombre: "Milly", edad: 3, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato2, descripcion: "Ejemplar independiente y tranquilo. Prefiere ambientes calmados y es muy dócil." },
-  { id: 3, nombre: "Joe", edad: 1, sexo: "Hembra", ciudad: "Cancún", imagen: Gato3, descripcion: "Joven y llena de energía. Requiere estimulación física y espacio para jugar." },
-  { id: 4, nombre: "Felix", edad: 4, sexo: "Macho", ciudad: "Tulum", imagen: Gato4, descripcion: "Gato rescatado sumamente leal. Posee salud completa y busca un hogar definitivo." },
-  { id: 5, nombre: "Jerry", edad: 2, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato5, descripcion: "Destaca por su docilidad y búsqueda de afecto. Se integra bien a familias con niños." },
+  { id: 1, nombre: "Sia", edad: 1, sexo: "Hembra", ciudad: "Cancún", imagen: Gato1, descripcion: "De temperamento tranquilo y reservado. Se adapta mejor a hogares con adultos." },
+  { id: 2, nombre: "Roco", edad: 3, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato2, descripcion: "Ejemplar independiente y tranquilo. Prefiere ambientes calmados y es muy dócil." },
+  { id: 3, nombre: "Maya", edad: 1, sexo: "Hembra", ciudad: "Cancún", imagen: Gato3, descripcion: "Joven y llena de energía. Requiere estimulación física y espacio para jugar." },
+  { id: 4, nombre: "Felix", edad: 4, sexo: "Macho", ciudad: "Tulum", imagen: Gato4, descripcion: "Rescatado con excelente salud, es dócil y se habitúa rápido." },
+  { id: 5, nombre: "Jerry", edad: 1, sexo: "Macho", ciudad: "Playa del Carmen", imagen: Gato5, descripcion: "Gato joven con altos niveles de energía; ideal para una familia que le brinde tiempo de juego." },
   { id: 6, nombre: "Tom", edad: 1, sexo: "Macho", ciudad: "Cancún", imagen: Gato7, descripcion: "Explorador por naturaleza y muy valiente. Ideal para una familia activa." },
-  { id: 7, nombre: "Coco", edad: 5, sexo: "Hembra", ciudad: "Cancún", imagen: Gato6, descripcion: "Gatita madura y muy educada, busca un hogar tranquilo." },
-  { id: 8, nombre: "Nala", edad: 3, sexo: "Hembra", ciudad: "Tulum", imagen: Gato8, descripcion: "Tímida al principio, pero una vez que confía es puro amor." },
+  { id: 7, nombre: "Coco", edad: 5, sexo: "Hembra", ciudad: "Cancún", imagen: Gato6, descripcion: "Gatita muy educada, busca un hogar tranquilo." },
+  { id: 8, nombre: "Nala", edad: 3, sexo: "Hembra", ciudad: "Tulum", imagen: Gato8, descripcion: "Destaca por su comportamiento educado; es silenciosa y muy limpia en su entorno." },
   { id: 9, nombre: "Simba", edad: 1, sexo: "Macho", ciudad: "Cancún", imagen: Gato9, descripcion: "Un pequeño cachorro lleno de vida y ganas de jugar." },
-  { id: 10, nombre: "Pixel", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato10, descripcion: "Le encantan las alturas, siempre vigilando desde lo más alto." },
-  { id: 11, nombre: "Milo", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato11, descripcion: "Sociable por naturaleza, se lleva bien con otros gatitos." },
-  { id: 12, nombre: "Bibi", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato12, descripcion: "Ronronea en cuanto la miras, es cariñosa y busca mimos." },
+  { id: 10, nombre: "Pixel", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato10, descripcion: "Tiene un pelaje que requiere cepillado constante; es muy paciente durante el aseo." },
+  { id: 11, nombre: "Milo", edad: 3, sexo: "Macho", ciudad: "Cancún", imagen: Gato11, descripcion: "Muy observador y pacífico; prefiere los ambientes relajados y sin ruidos fuertes.." },
+  { id: 12, nombre: "Bibi", edad: 2, sexo: "Hembra", ciudad: "Playa del Carmen", imagen: Gato12, descripcion: "Gatita muy adaptable ante cambios de entorno y ruidos domésticos." },
 ];
 
 export default function Adoptalos() {
@@ -157,7 +157,7 @@ export default function Adoptalos() {
                           </div>
                         </div>
 
-                        <div className="adoptalos-tooltip-description">"{cat.descripcion}"</div>
+                        <div className="adoptalos-tooltip-description">{cat.descripcion}</div>
 
                         <div className="adoptalos-tooltip-footer">
                           <div><FiCheckCircle /> SALUD VERIFICADA</div>
