@@ -99,7 +99,7 @@ export default function Contactanos() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="correo@ejemplo.com"
-                className="w-full rounded-xl px-4 py-3 bg-white dark:bg-black/20 outline-none border border-transparent focus:border-[var(--accent)]"
+                className="auth-input"
               />
               {errors.email && (
                 <p className="mt-1 text-xs text-red-500">{errors.email}</p>
@@ -117,7 +117,7 @@ export default function Contactanos() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Tu nombre"
-                className="w-full rounded-xl px-4 py-3 bg-white dark:bg-black/20 outline-none border border-transparent focus:border-[var(--accent)]"
+                className="auth-input"
               />
               {errors.name && (
                 <p className="mt-1 text-xs text-red-500">{errors.name}</p>
@@ -134,9 +134,9 @@ export default function Contactanos() {
               name="message"
               value={form.message}
               onChange={handleChange}
-              rows={5}
+              rows={1}
               placeholder="Cuéntanos en qué podemos ayudarte…"
-              className="w-full rounded-xl px-4 py-3 bg-white dark:bg-black/20 outline-none border border-transparent focus:border-[var(--accent)] resize-none"
+              className="auth-input"
             />
             <div className="flex justify-between mt-1 text-xs">
               <span className="text-red-500">{errors.message}</span>
