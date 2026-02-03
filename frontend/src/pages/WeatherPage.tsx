@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import LoaderCat from "../components/Loader/LoaderCat";
 import { useParams, useNavigate } from "react-router-dom";
 import WeatherCard from "../components/WeatherCard";
 import ForecastHourly from "../components/ForecastHourly";
 import ForecastWeekly from "../components/ForecastWeekly";
 import Stats from "../components/Stats";
 
-import { getWeatherByCityName} from "../services/weatherApi";
+import { getWeatherByCityName } from "../services/weatherApi";
 import { normalizeWeather } from "../utils/normalizeWeather";
+import { useCat } from "../context/CatContext";
 
 type City = {
   id: string;
@@ -23,40 +25,65 @@ type City = {
 };
 
 export default function WeatherPage() {
+  const { selectedCat } = useCat();
   const params = useParams<{ city?: string }>();
   const navigate = useNavigate();
+
   const [viewMode, setViewMode] = useState<"hoy" | "semana">("hoy");
   const [city, setCity] = useState<City | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   async function loadByName(name: string) {
-    try {
-      setLoading(true);
-      const { raw, cityName } = await getWeatherByCityName(name);
-      const norm = normalizeWeather({ raw, cityName });
-      console.log("HOURLY:", norm.hourly);
-      setCity(norm);
+  try {
+    if (loading) return;
+    setLoading(true);
+    setShowLoader(true); // 🐱 mostrar LoaderCat
 
-      navigate(`/weather/${encodeURIComponent(cityName)}`, { replace: true });
-    } catch (err) {
-      console.error(err);
-      alert("No se pudo cargar la ciudad.");
-    } finally {
-      setLoading(false);
-    }
+    const { raw, cityName } = await getWeatherByCityName(name);
+    const norm = normalizeWeather({ raw, cityName });
+
+    // Aseguramos que el loader se muestre al menos 5 segundos
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    setCity(norm);
+    navigate(`/weather/${encodeURIComponent(cityName)}`, { replace: true });
+  } catch (err) {
+    console.error(err);
+    alert("No se pudo cargar la ciudad.");
+  } finally {
+    setLoading(false);
+    setShowLoader(false); // 🐾 ocultar LoaderCat
   }
+}
+
 
   useEffect(() => {
+    // ✅ IMPORTANTE: no cortar hooks antes, redirigir aquí
+    if (!selectedCat) {
+      navigate("/select-cat", { replace: true });
+      return;
+    }
+
+    // Si hay gato, cargamos ciudad
     if (params.city) {
       loadByName(decodeURIComponent(params.city));
     } else {
       loadByName("Cancún, MX");
     }
-  }, [params.city]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.city, selectedCat]);
 
-  if (loading || !city) {
-    return <main className="container-michi">Cargando...</main>;
-  }
+  // Mientras se redirige (evita flicker)
+  if (!selectedCat) return null;
+
+ if (loading || !city) {
+  return (
+    <main className="container-michi flex justify-center items-center min-h-[calc(100vh-160px)]">
+      {showLoader && <LoaderCat />}
+    </main>
+  );
+}
 
   return (
     <main className="container-michi min-h-[calc(100vh-160px)] flex flex-col lg:flex-row items-center justify-center py-10 gap-12">
@@ -64,6 +91,18 @@ export default function WeatherPage() {
         <div className="mb-2 w-full px-4 sm:px-0">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[var(--dark)] dark:text-[var(--white)]"></h2>
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[var(--accent)]"></h3>
+        </div>
+
+        {/* 🐾 Michi seleccionado */}
+        <div className="flex items-center gap-4 mb-4">
+          <img
+            src={selectedCat.image}
+            alt={selectedCat.name}
+            className="w-16 h-16 rounded-full"
+          />
+          <span className="font-semibold text-lg">
+            {selectedCat.name} te da el clima 🐾
+          </span>
         </div>
 
         <div className="flex justify-center w-full">
@@ -74,6 +113,7 @@ export default function WeatherPage() {
             max={city.max}
             min={city.min}
             weatherCode={city.weatherCode}
+            selectedCatId={selectedCat?.id} // <-- aquí le pasamos el gato seleccionado
           />
         </div>
       </div>

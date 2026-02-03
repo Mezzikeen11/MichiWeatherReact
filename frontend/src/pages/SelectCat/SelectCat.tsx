@@ -1,5 +1,5 @@
 import CatGallery from "../../components/catGallery/CatGallery";
-import "../../components/CatGallery/CatGallery.scss";
+import "../../components/catGallery/CatGallery.scss";
 
 export default function SelectCat() {
   return (

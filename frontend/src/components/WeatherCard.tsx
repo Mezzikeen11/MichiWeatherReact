@@ -7,9 +7,18 @@ interface WeatherCardProps {
   max: number;
   min: number;
   weatherCode?: number;
+  selectedCatId?: string; // id base del gato: "Misha", "Aurora", "Kuro", etc.
 }
 
-export default function WeatherCard({ location, condition, temp, max, min, weatherCode }: WeatherCardProps) {
+export default function WeatherCard({
+  location,
+  condition,
+  temp,
+  max,
+  min,
+  weatherCode,
+  selectedCatId = "Michi", // id base por defecto
+}: WeatherCardProps) {
   const keyFromCode =
     typeof weatherCode === "number"
       ? (function mapCode() {
@@ -25,7 +34,31 @@ export default function WeatherCard({ location, condition, temp, max, min, weath
         })()
       : condition.toLowerCase();
 
-  const { fondo, michi } = weatherCardMap[keyFromCode] ?? weatherCardMap["nublado"];
+  // Mapeo para transformar el id del gato (lo que almacenas en selectedCat.id)
+  // al "prefijo" que usa weatherCardMap (por ejemplo "Kuro" -> "Michi", "Misha" -> "Misha")
+  const catPrefixMap: Record<string, string> = {
+    Kuro: "Michi",   // si tus assets de Kuro están nombrados como Michi*
+    Misha: "Misha",
+    Aurora: "Aurora",
+    // agrega más si tienes otros nombres / prefijos
+  };
+
+  const suffixMap: Record<string, string> = {
+    soleado: "Sol",
+    parcial: "Parcial",
+    nublado: "Nublado",
+    lluvioso: "Lluvia",
+    llovizna: "Parcial", // ajuste: si no tienes llovizna, usa parcial o un fallback
+    tormenta: "Nublado", // fallback
+    nieve: "Nublado",
+    niebla: "Nublado",
+  };
+
+  const prefix = catPrefixMap[selectedCatId ?? "Michi"] ?? selectedCatId ?? "Michi";
+  const suffix = suffixMap[keyFromCode] ?? "Nublado";
+  const catKey = `${prefix}${suffix}`; // por ejemplo "MishaSol" o "MichiParcial"
+
+  const { fondo, michi } = weatherCardMap[keyFromCode]?.[catKey] ?? weatherCardMap["nublado"]["MichiNublado"];
 
   return (
     <div className="relative flex flex-col items-center w-full max-w-[520px] mx-auto text-center">
@@ -56,4 +89,3 @@ export default function WeatherCard({ location, condition, temp, max, min, weath
     </div>
   );
 }
-
