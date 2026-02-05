@@ -1,3 +1,5 @@
+
+import "./Adoptalos.css";
 import { useState, useMemo } from "react";
 import { FiX, FiEye, FiCheckCircle, FiMapPin, FiSend, FiHeart } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
