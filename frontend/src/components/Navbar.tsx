@@ -43,12 +43,6 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8 ml-6">
-            <Link
-              to="/"
-              className="font-semibold text-sm text-[var(--tx)] hover:text-[var(--accent)] transition"
-            >
-              Inicio
-            </Link>
 
             {/* Ubicaciones - CON HOVER Y DELAY */}
             <div 
@@ -172,12 +166,7 @@ export default function Navbar() {
       {/* 📱 MENÚ MOBILE */}
       {menuOpen && (
         <div className="lg:hidden bg-[var(--panel)] dark:bg-[var(--panel)] border-t border-[var(--glass)] py-4 px-6 space-y-3 animate-fade-in">
-          <Link
-            to="/"
-            className="block font-medium hover:text-[var(--accent)] transition"
-          >
-            Inicio
-          </Link>
+
 
           {/* Ubicaciones MOBILE - CON CLICK */}
           <button
@@ -204,6 +193,7 @@ export default function Navbar() {
           <Link
             to="/adoptalos"
             className="block font-medium hover:text-[var(--accent)] transition"
+            onClick={() => setMenuOpen(false)}
           >
             
             Adoptalos
@@ -220,6 +210,7 @@ export default function Navbar() {
           <Link
             to="/contactanos"
             className="block font-medium hover:text-[var(--accent)] transition"
+            onClick={() => setMenuOpen(false)}
           >
             
             Contáctanos
