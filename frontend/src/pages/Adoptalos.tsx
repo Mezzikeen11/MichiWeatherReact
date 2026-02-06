@@ -86,24 +86,24 @@ export default function Adoptalos() {
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="adoptalos-filters">
         <div className="adoptalos-filter-group">
-          <label className="adoptalos-filter-label">Ciudad</label>
-          <select value={filterCity} onChange={(e) => setFilterCity(e.target.value)} className="adoptalos-filter-select">
+          <label htmlFor="city-filter" className="adoptalos-filter-label">Ciudad</label>
+          <select id="city-filter" value={filterCity} onChange={(e) => setFilterCity(e.target.value)} className="adoptalos-filter-select">
             <option value="">Todas las ciudades</option>
             {cities.map((city) => <option key={city} value={city}>{city}</option>)}
           </select>
         </div>
 
         <div className="adoptalos-filter-group">
-          <label className="adoptalos-filter-label">Edad</label>
-          <select value={filterAge} onChange={(e) => setFilterAge(e.target.value)} className="adoptalos-filter-select">
+          <label htmlFor="age-filter" className="adoptalos-filter-label">Edad</label>
+          <select id="age-filter" value={filterAge} onChange={(e) => setFilterAge(e.target.value)} className="adoptalos-filter-select">
             <option value="">Todas las edades</option>
             {ages.map((age) => <option key={age} value={age}>{age} {age === 1 ? "año" : "años"}</option>)}
           </select>
         </div>
 
         <div className="adoptalos-filter-group">
-          <label className="adoptalos-filter-label">Sexo</label>
-          <select value={filterSex} onChange={(e) => setFilterSex(e.target.value)} className="adoptalos-filter-select">
+          <label htmlFor="sex-filter" className="adoptalos-filter-label">Sexo</label>
+          <select id="sex-filter" value={filterSex} onChange={(e) => setFilterSex(e.target.value)} className="adoptalos-filter-select">
             <option value="">Cualquier sexo</option>
             <option value="Macho">Macho</option>
             <option value="Hembra">Hembra</option>

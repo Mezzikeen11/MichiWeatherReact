@@ -35,14 +35,16 @@ export default function SearchBar({ onSelectCity }: { onSelectCity: (city: strin
 
   return (
     <div className="relative w-full max-w-[420px]">
-      <div className="flex items-center bg-[var(--white)]/80 dark:bg-[var(--glass)] rounded-full px-3 py-1 shadow-michi-1">
+      <div className="flex items-center bg-[var(--white)]/60 dark:bg-[var(--glass)] rounded-full px-3 py-1 shadow-michi-1">
         <input
           value={query}
           onChange={handleChange}
           placeholder="Buscar ciudad..."
-          className="w-full bg-transparent outline-none text-sm text-[var(--dark)] dark:text-[var(--white)] placeholder-[var(--muted)]"
+          className="text-[var(--accent)}/60 bg-transparent outline-none rounded-full"
           aria-label="Buscar ciudad"
         />
+
+
       </div>
 
       {show && results.length > 0 && (

@@ -1,365 +1,232 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Quicksand:wght@300..700&display=swap');
-
 @import "tailwindcss";
 
+/* =========================================================
+   BLOQUEO TOTAL DE TEMA DEL SISTEMA
+========================================================= */
 
-/* 🎨 Tokens / variables - modo claro */
+html {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* =========================================================
+   VARIABLES BASE
+========================================================= */
 
 :root {
---bg: #F7FBF4;
---tx: #000000;
---panel: #E4F3DC;
---panel2: #F6FBF5;
---accent: #2E7D1E;
---muted: #3A4C3A;
---dark: #133217;
---white: #ffffff;
---glass: rgba(104, 104, 104, 0.06);
---border: 1px solid rgba(255, 255, 255, 0.2);
---da: #ceecc671;
+  --bg: #F7FBF4;
+  --tx: #000000;
+  --panel: #E4F3DC;
+  --panel2: #F6FBF5;
+  --accent: #2E7D1E;
+  --muted: #3A4C3A;
+  --dark: #133217;
+  --white: #ffffff;
+  --glass: rgba(104, 104, 104, 0.06);
+  --border: 1px solid rgba(255,255,255,0.2);
+  --da: #ceecc671;
 
+  /* Michi */
+  --michi-bg: #daf7a6;
+  --michi-body: #121212;
+  --michi-eye: #fdd835;
+  --michi-nose: #ffb6c1;
 }
 
+[data-theme="dark"] {
+  --bg: #09160f;
+  --tx: #ffffff;
+  --panel: #0a4d28;
+  --panel2:#156b3c;
+  --accent: #73d100e1 ;
+  --muted: #9DB69A;
+  --white: #F2F7F1;
+  --glass: rgba(255,255,255,0.04);
+  --border: 1px solid rgba(32,65,18,0.2);
+  --da: #437154;
 
-
-/* 🌑 Modo oscuro */
-
-[data-theme='dark'] {
-
---bg: #09160f;
---tx: #ffffff;
---panel: #0a4d28;
---panel2:#156b3c;
---accent: #1c9d1c;
---muted: #9DB69A;
---white: #F2F7F1;
---glass: rgba(255,255,255,0.04);
---border: 1px solid rgba(32, 65, 18, 0.2);
---da: #437154;
-
-
+  /* Michi dark */
+  --michi-bg: #0f2a1a;
+  --michi-body: #e6f5e9;
+  --michi-eye: #9cff57;
+  --michi-nose: #ff9eb5;
 }
 
-
-
-/* Base */
+/* =========================================================
+   BASE
+========================================================= */
 
 @layer base {
-html, body, #root {
-height: 100%;
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    font-family: 'Quicksand','League Spartan',Inter,system-ui,sans-serif;
+    background-color: var(--bg);
+    color: var(--tx);
+    transition: background-color .3s ease, color .3s ease;
+  }
+
+  * {
+    color: inherit;
+  }
 }
 
-
-
-body {
-font-family: 'Quicksand', 'League Spartan', Inter, system-ui, sans-serif;
-background-color: var(--bg);
-color: var(--dark);
-transition: background-color .36s cubic-bezier(.2,.9,.2,1), color .28s;
-}
-
-
-
-[data-theme='dark'] body {
-color: var(--white);
-}
-}
-
-
-
-/* Utilidades */
+/* =========================================================
+   COMPONENTES
+========================================================= */
 
 @layer components {
-.container-michi {
-@apply mx-auto w-[94%] max-w-[1200px];
+
+  .container-michi {
+    @apply mx-auto w-[94%] max-w-[1200px];
+  }
+
+  .scroll-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
-
-
-/* ocultar scrollbar en elementos con .scroll-hidden */
-
-.scroll-hidden::-webkit-scrollbar {
-display: none;
-}
-.scroll-hidden {
--ms-overflow-style: none; /* IE and Edge */
-scrollbar-width: none; /* Firefox */
-}
-}
-
-
-
-/* Sombras */
+/* =========================================================
+   UTILIDADES
+========================================================= */
 
 @layer utilities {
-.shadow-michi-1 {
-box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  .shadow-michi-1 {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  }
 }
-}
 
-
-
-/* 🐱 MICHI AVATAR */
-
-
+/* =========================================================
+   MICHI AVATAR
+========================================================= */
 
 .cat-container {
-width: 160px;
-height: 160px;
-background: var(--michi-bg);
-border-radius: 50%;
-display: flex;
-justify-content: center;
-align-items: flex-end;
-overflow: hidden;
+  width: 160px;
+  height: 160px;
+  background: var(--michi-bg);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
 }
-
 
 .cat {
-width: 110px;
-height: 120px;
-background: var(--michi-body);
-border-radius: 50% 50% 30% 30%;
-position: relative;
-margin-bottom: -10px;
-transition: background-color 0.3s ease;
+  width: 110px;
+  height: 120px;
+  background: var(--michi-body);
+  border-radius: 50% 50% 30% 30%;
+  position: relative;
+  margin-bottom: -10px;
+  transition: background-color 0.3s ease;
 }
 
-
-
-/* OREJAS */
-
+/* Ears */
 .ear {
-
-width: 0;
-height: 0;
-border-left: 20px solid transparent;
-border-right: 20px solid transparent;
-border-bottom: 40px solid var(--michi-body);
-position: absolute;
-top: -15px;
-transition: transform 0.15s ease-out, border-bottom-color 0.3s ease;
-
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 40px solid var(--michi-body);
+  position: absolute;
+  top: -15px;
 }
 
 .ear.left { left: 5px; transform: rotate(-15deg); }
 .ear.right { right: 5px; transform: rotate(15deg); }
 
-
-/* CARA */
-
-.face {
-padding-top: 35px;
-text-align: center;
-}
-
-
+/* Face */
+.face { padding-top: 35px; text-align: center; }
 
 .eye-row {
-
-display: flex;
-
-justify-content: center;
-
-gap: 15px;
-
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
-
-
 
 .eye {
-
-width: 28px;
-
-height: 28px;
-
-background: var(--michi-eye);
-
-border-radius: 50%;
-
-position: relative;
-
-overflow: hidden;
-
-transition: height 0.2s ease, margin-top 0.2s ease, background-color 0.3s ease;
-
+  width: 28px;
+  height: 28px;
+  background: var(--michi-eye);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
 }
-
-
 
 .pupil {
-
-width: 12px;
-
-height: 18px;
-
-background: black;
-
-border-radius: 50%;
-
-position: absolute;
-
-top: 5px;
-
-left: 8px;
-
-transition: transform 0.15s ease;
-
+  width: 12px;
+  height: 18px;
+  background: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 5px;
+  left: 8px;
 }
-
-
-
-[data-theme="dark"] .pupil {
-
-background: #000;
-
-}
-
-
-
-/* NARIZ */
 
 .nose {
-
-width: 8px;
-
-height: 5px;
-
-background: var(--michi-nose);
-
-border-radius: 50%;
-
-margin: 8px auto;
-
-transition: background-color 0.3s ease;
-
+  width: 8px;
+  height: 5px;
+  background: var(--michi-nose);
+  border-radius: 50%;
+  margin: 8px auto;
 }
 
-
-
-/* PATITAS */
+/* Paws */
 
 .paw-left,
-
 .paw-right {
-
-width: 35px;
-
-height: 50px;
-
-background: var(--michi-body);
-
-border-radius: 20px 20px 10px 10px;
-
-position: absolute;
-
-top: 120px;
-
-transition:
-
-transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-
-background-color 0.3s ease;
-
+  width: 35px;
+  height: 50px;
+  background: var(--michi-body);
+  border-radius: 20px 20px 10px 10px;
+  position: absolute;
+  top: 120px;
 }
-
-
 
 .paw-left { left: 15px; }
-
 .paw-right { right: 15px; }
 
-
-
-/* 🙈 PASSWORD */
+/* Password hiding animation */
 
 .cat.hiding .paw-left {
-
-transform: translateY(-75px) rotate(10deg);
-
+  transform: translateY(-75px) rotate(10deg);
 }
-
-
 
 .cat.hiding .paw-right {
-
-transform: translateY(-75px) rotate(-10deg);
-
+  transform: translateY(-75px) rotate(-10deg);
 }
-
-
 
 .cat.hiding .eye {
-
-height: 4px;
-
-margin-top: 12px;
-
+  height: 4px;
+  margin-top: 12px;
 }
 
-
-
-/* 🐱 Michi theme tokens */
-
-:root {
-
---michi-bg: #daf7a6; /* fondo círculo */
-
---michi-body: #121212; /* cuerpo */
-
---michi-eye: #fdd835; /* ojos */
-
---michi-nose: #ffb6c1;
-
-}
-
-
-
-[data-theme="dark"] {
-
---michi-bg: #0f2a1a; /* verde oscuro elegante */
-
---michi-body: #e6f5e9; /* Michi claro en dark */
-
---michi-eye: #9cff57;
-
---michi-nose: #ff9eb5;
-
-}
-
-
-
-
-
-/* 🧑‍💻 AUTH INPUTS */
-
-
+/* =========================================================
+   AUTH INPUTS
+========================================================= */
 
 .auth-input {
-
-width: 100%;
-
-border: none;
-
-border-bottom: 2px solid #cdecc0;
-
-padding: 10px 0;
-
-font-size: 14px;
-
-outline: none;
-
-background: transparent;
-
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #cdecc0;
+  padding: 10px 0;
+  font-size: 14px;
+  outline: none;
+  background: transparent;
+  color: var(--tx);
 }
-
-
 
 .auth-input:focus {
-
-border-bottom-color: #2e7d32;
-
+  border-bottom-color: var(--accent);
 }
-
-
-/* ------------------------------------------- */

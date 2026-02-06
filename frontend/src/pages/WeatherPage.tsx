@@ -35,72 +35,62 @@ export default function WeatherPage() {
   const [showLoader, setShowLoader] = useState(false);
 
   async function loadByName(name: string) {
-  try {
-    if (loading) return;
-    setLoading(true);
-    setShowLoader(true); // 🐱 mostrar LoaderCat
+    try {
+      if (loading) return;
+      setLoading(true);
+      setShowLoader(true);
 
-    const { raw, cityName } = await getWeatherByCityName(name);
-    const norm = normalizeWeather({ raw, cityName });
+      const { raw, cityName } = await getWeatherByCityName(name);
+      const norm = normalizeWeather({ raw, cityName });
 
-    // Aseguramos que el loader se muestre al menos 5 segundos
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    setCity(norm);
-    navigate(`/weather/${encodeURIComponent(cityName)}`, { replace: true });
-  } catch (err) {
-    console.error(err);
-    alert("No se pudo cargar la ciudad.");
-  } finally {
-    setLoading(false);
-    setShowLoader(false); // 🐾 ocultar LoaderCat
+      setCity(norm);
+      navigate(`/weather/${encodeURIComponent(cityName)}`, { replace: true });
+    } catch (err) {
+      console.error(err);
+      alert("No se pudo cargar la ciudad.");
+    } finally {
+      setLoading(false);
+      setShowLoader(false);
+    }
   }
-}
-
 
   useEffect(() => {
-    // ✅ IMPORTANTE: no cortar hooks antes, redirigir aquí
     if (!selectedCat) {
       navigate("/select-cat", { replace: true });
       return;
     }
 
-    // Si hay gato, cargamos ciudad
     if (params.city) {
       loadByName(decodeURIComponent(params.city));
     } else {
       loadByName("Cancún, MX");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.city, selectedCat]);
 
-  // Mientras se redirige (evita flicker)
   if (!selectedCat) return null;
 
- if (loading || !city) {
-  return (
-    <main className="container-michi flex justify-center items-center min-h-[calc(100vh-160px)]">
-      {showLoader && <LoaderCat />}
-    </main>
-  );
-}
+  if (loading || !city) {
+    return (
+      <main className="container-michi flex justify-center items-center min-h-[calc(100vh-160px)]">
+        {showLoader && <LoaderCat />}
+      </main>
+    );
+  }
 
   return (
     <main className="container-michi min-h-[calc(100vh-160px)] flex flex-col lg:flex-row items-center justify-center py-10 gap-12">
       <div className="w-full lg:w-1/2 flex flex-col items-center">
-        <div className="mb-2 w-full px-4 sm:px-0">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[var(--dark)] dark:text-[var(--white)]"></h2>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[var(--accent)]"></h3>
-        </div>
 
-        {/* 🐾 Michi seleccionado */}
+        {/* Michi seleccionado */}
         <div className="flex items-center gap-4 mb-4">
           <img
             src={selectedCat.image}
             alt={selectedCat.name}
             className="w-16 h-16 rounded-full"
           />
-          <span className="font-semibold text-lg">
+          <span className="font-semibold text-lg text-[var(--tx)]">
             {selectedCat.name} te da el clima 🐾
           </span>
         </div>
@@ -113,19 +103,21 @@ export default function WeatherPage() {
             max={city.max}
             min={city.min}
             weatherCode={city.weatherCode}
-            selectedCatId={selectedCat?.id} // <-- aquí le pasamos el gato seleccionado
+            selectedCatId={selectedCat?.id}
           />
         </div>
       </div>
 
       <aside className="flex flex-col items-center gap-8 w-full lg:w-1/2 max-w-[520px]">
+
+        {/* Switch */}
         <div className="flex gap-4">
           <button
             onClick={() => setViewMode("hoy")}
             className={`h-10 px-6 rounded-full font-semibold transition-all duration-300 ${
               viewMode === "hoy"
                 ? "bg-[var(--accent)] text-white shadow-michi-1"
-                : "bg-[var(--panel)] text-[var(--dark)] dark:text-[var(--white)] hover:bg-[var(--accent)]/20"
+                : "bg-[var(--panel)] text-[var(--tx)] hover:bg-[var(--accent)]/20"
             }`}
           >
             Hoy
@@ -136,14 +128,14 @@ export default function WeatherPage() {
             className={`h-10 px-6 rounded-full font-semibold transition-all duration-300 ${
               viewMode === "semana"
                 ? "bg-[var(--accent)] text-white shadow-michi-1"
-                : "bg-[var(--panel)] text-[var(--dark)] dark:text-[var(--white)] hover:bg-[var(--accent)]/20"
+                : "bg-[var(--panel)] text-[var(--tx)] hover:bg-[var(--accent)]/20"
             }`}
           >
             Semana
           </button>
         </div>
 
-        <div className="w-full overflow-x-auto p-4 rounded-xl bg-[var(--panel)]/50 dark:bg-[var(--glass)] shadow-michi-1 scroll-hidden">
+        <div className="w-full overflow-x-auto p-4 rounded-xl bg-[var(--panel)]/50 shadow-michi-1 scroll-hidden">
           {viewMode === "hoy" ? (
             <ForecastHourly data={city.hourly ?? []} />
           ) : (

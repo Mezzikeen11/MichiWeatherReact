@@ -13,7 +13,7 @@ export default function AuthCard() {
     <div className="w-full max-w-md flex flex-col items-center gap-6">
 
       {/* TÍTULO */}
-      <h1 className="text-xl font-semibold text-center text-[var(--dark)] dark:text-[var(--white)]">
+      <h1 className="text-[var(--tx)] font-semibold text-center">
         {mode === "login"
           ? "Bienvenido de vuelta"
           : "Bienvenidos a MichiWeather"}

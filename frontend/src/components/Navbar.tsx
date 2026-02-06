@@ -17,14 +17,14 @@ export default function Navbar() {
     return document.documentElement.getAttribute("data-theme") === "dark";
   });
 
-  // 🔹 Selección desde SearchBar
+  // Seleccionar ciudad desde buscador
   const handleSelectCity = (cityName: string) => {
     navigate(`/weather/${encodeURIComponent(cityName)}`);
     setMenuOpen(false);
     setSearchOpen(false);
   };
 
-  // 🔹 Selección desde ubicaciones recomendadas
+  // Seleccionar recomendada
   const handleSelectRecommended = (locQuery: string) => {
     navigate(`/weather/${encodeURIComponent(locQuery)}`);
     setLocOpen(false);
@@ -33,28 +33,37 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full fixed top-0 left-0 z-40 bg-[var(--panel)] dark:bg-[var(--panel)] shadow-md transition-colors duration-300">
+    <header className="w-full fixed top-0 left-0 z-40 bg-[var(--panel)] shadow-md">
       <div className="container-michi flex items-center justify-between h-16 px-4">
+
+        {/* LOGO */}
         <div className="flex items-center gap-4">
           <Link to="/" className="flex items-center gap-3">
-            <span className="font-extrabold text-xl tracking-wide text-[var(--accent)] dark:text-[var(--white)]">
+            <span className="font-extrabold text-xl tracking-wide text-[var(--accent)]">
               MichiWeather
             </span>
           </Link>
 
+          {/* DESKTOP NAV */}
           <nav className="hidden lg:flex items-center gap-8 ml-6">
 
-            {/* Ubicaciones - CON HOVER Y DELAY */}
-            <div 
+            {/* CLIMA */}
+            <Link
+              to="/"
+              className="font-semibold text-sm text-[var(--tx)] hover:text-[var(--accent)] transition"
+            >
+              Clima
+            </Link>
+
+            {/* UBICACIONES */}
+            <div
               className="relative"
               onMouseEnter={() => {
                 if (locTimeout.current) clearTimeout(locTimeout.current);
                 setLocOpen(true);
               }}
               onMouseLeave={() => {
-                locTimeout.current = setTimeout(() => {
-                  setLocOpen(false);
-                }, 200);
+                locTimeout.current = setTimeout(() => setLocOpen(false), 200);
               }}
             >
               <button className="font-semibold text-sm text-[var(--tx)] hover:text-[var(--accent)] transition">
@@ -62,127 +71,109 @@ export default function Navbar() {
               </button>
 
               {locOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-[var(--panel)] shadow-michi-1 rounded-xl p-2 z-50">
+                <div className="absolute left-0 mt-2 w-52 bg-[var(--panel)] shadow-michi-1 rounded-xl p-2 z-50">
                   <p className="px-3 py-1 text-xs text-[var(--accent)] font-semibold">
                     Recomendadas
                   </p>
 
-                  <div className="flex flex-col">
-                    {recommendedLocations.map((loc, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleSelectRecommended(loc.name)}
-                        className="text-left px-3 py-2 text-sm hover:bg-[var(--accent)]/10 rounded-lg transition"
-                      >
-                        {loc.name}
-                      </button>
-                    ))}
-                  </div>
+                  {recommendedLocations.map((loc, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSelectRecommended(loc.name)}
+                      className="w-full text-left px-3 py-2 text-sm hover:bg-[var(--accent)]/10 rounded-lg transition"
+                    >
+                      {loc.name}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
 
-            <Link to="/adoptalos"
-              className="font-semibold text-sm text-[var(--tx)] transition"
-            >
-              Adoptalos
+            <Link to="/adoptalos" className="font-semibold text-sm text-[var(--tx)]">
+              Adóptalos
             </Link>
 
-            <Link to="/nosotros"
-              className="font-semibold text-sm text-[var(--tx)] transition"
-            >
+            <Link to="/nosotros" className="font-semibold text-sm text-[var(--tx)]">
               Nosotros
             </Link>
-            
-            <Link to="/contactanos"
-              className="font-semibold text-sm text-[var(--tx)] transition"
-            >
+
+            <Link to="/contactanos" className="font-semibold text-sm text-[var(--tx)]">
               Contáctanos
             </Link>
-
           </nav>
         </div>
 
         {/* DERECHA */}
         <div className="flex items-center gap-3">
-          {/* 🔍 SearchBar SOLO en desktop */}
+
+          {/* SEARCH DESKTOP */}
           <div className="hidden sm:block">
             <SearchBar onSelectCity={handleSelectCity} />
           </div>
 
-          {/* 🔍 LUPA SOLO EN MÓVIL */}
+          {/* SEARCH MOBILE */}
           <button
             onClick={() => setSearchOpen(true)}
             className="sm:hidden h-9 w-9 grid place-items-center hover:bg-[var(--accent)]/10 rounded-full"
-            aria-label="Buscar ciudad"
           >
             <FiSearch className="text-[var(--accent)]" />
           </button>
 
-          {/* 🌙 Tema */}
+          {/* TEMA */}
           <button
             onClick={() => {
-              setDark((s) => !s);
+              setDark(!dark);
               document.documentElement.setAttribute(
                 "data-theme",
                 !dark ? "dark" : "light"
               );
             }}
-            title="Cambiar tema"
-            aria-label="Cambiar tema"
-            className="h-9 w-9 rounded-full grid place-items-center hover:shadow-michi-1 transition bg-transparent"
+            className="h-9 w-9 rounded-full grid place-items-center hover:shadow-michi-1"
           >
-            {dark ? (
-              <FiSun className="text-[var(--accent)]" />
-            ) : (
-              <FiMoon className="text-[var(--accent)]" />
-            )}
+            {dark ? <FiSun className="text-[var(--accent)]" /> : <FiMoon className="text-[var(--accent)]" />}
           </button>
 
-          {/* 👤 Perfil */}
-          <Link
-            to="/perfil"
-            title="Perfil"
-            className="h-9 w-9 rounded-full grid place-items-center hover:shadow-michi-1 transition bg-transparent"
-          >
+          {/* PERFIL */}
+          <Link to="/perfil" className="h-9 w-9 grid place-items-center">
             <FiUser className="text-[var(--accent)]" />
           </Link>
 
-          {/* ☰ Hamburguesa */}
+          {/* HAMBURGUESA */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="h-9 w-9 inline-flex items-center justify-center lg:hidden hover:bg-[var(--accent)]/10 transition rounded"
-            aria-label="Abrir menú"
+            className="lg:hidden h-9 w-9 grid place-items-center"
           >
-            {menuOpen ? (
-              <FiX className="text-[var(--dark)] dark:text-[var(--white)]" />
-            ) : (
-              <FiMenu className="text-[var(--dark)] dark:text-[var(--white)]" />
-            )}
+            {menuOpen ? <FiX /> : <FiMenu />}
           </button>
         </div>
       </div>
 
-      {/* 📱 MENÚ MOBILE */}
+      {/* MOBILE MENU */}
       {menuOpen && (
-        <div className="lg:hidden bg-[var(--panel)] dark:bg-[var(--panel)] border-t border-[var(--glass)] py-4 px-6 space-y-3 animate-fade-in">
+        <div className="lg:hidden bg-[var(--panel)] border-t border-[var(--glass)] py-6 px-6 space-y-4">
 
+          <Link
+            to="/"
+            onClick={() => setMenuOpen(false)}
+            className="block text-base font-medium text-[var(--tx)] hover:text-[var(--accent)]"
+          >
+            Clima
+          </Link>
 
-          {/* Ubicaciones MOBILE - CON CLICK */}
           <button
             onClick={() => setMobileLocOpen(!mobileLocOpen)}
-            className="block font-medium hover:text-[var(--accent)] transition text-left w-full"
+            className="block text-base font-medium text-left w-full hover:text-[var(--accent)]"
           >
             Ubicaciones
           </button>
 
           {mobileLocOpen && (
-            <div className="pl-4">
+            <div className="pl-4 space-y-2">
               {recommendedLocations.map((loc, i) => (
                 <button
                   key={i}
                   onClick={() => handleSelectRecommended(loc.name)}
-                  className="block py-2 text-sm hover:text-[var(--accent)] transition"
+                  className="block text-sm hover:text-[var(--accent)]"
                 >
                   {loc.name}
                 </button>
@@ -190,39 +181,24 @@ export default function Navbar() {
             </div>
           )}
 
-          <Link
-            to="/adoptalos"
-            className="block font-medium hover:text-[var(--accent)] transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            
-            Adoptalos
+          <Link to="/adoptalos" onClick={() => setMenuOpen(false)} className="block text-base font-medium">
+            Adóptalos
           </Link>
 
-          <Link
-            to="/nosotros"
-            className="block font-medium hover:text-[var(--accent)] transition"
-            onClick={() => setMenuOpen(false)}
-          >
+          <Link to="/nosotros" onClick={() => setMenuOpen(false)} className="block text-base font-medium">
             Nosotros
           </Link>
 
-          <Link
-            to="/contactanos"
-            className="block font-medium hover:text-[var(--accent)] transition"
-            onClick={() => setMenuOpen(false)}
-          >
-            
+          <Link to="/contactanos" onClick={() => setMenuOpen(false)} className="block text-base font-medium">
             Contáctanos
           </Link>
-      
         </div>
       )}
 
-      {/* 🔍 MODAL DE BÚSQUEDA EN MÓVIL */}
+      {/* SEARCH MODAL MOBILE */}
       {searchOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-start justify-center pt-24">
-          <div className="bg-[var(--panel)] rounded-xl p-4 w-[90%] max-w-sm shadow-michi-1">
+        <div className="fixed inset-0 bg-black/40 z-50 flex justify-center pt-24">
+          <div className="bg-[var(--panel)] rounded-xl p-4 w-[90%] max-w-sm">
             <SearchBar onSelectCity={handleSelectCity} />
           </div>
         </div>
