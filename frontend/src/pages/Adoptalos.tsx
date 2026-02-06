@@ -79,7 +79,7 @@ export default function Adoptalos() {
   return (
     <div className="adoptalos-container">
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="adoptalos-header">
-        <div className="adoptalos-title">Adóptalos</div>
+        <div className="adoptalos-title">Adoptalos</div>
         <div className="adoptalos-divider" />
         <div className="adoptalos-subtitle">Gatitos sin hogar en espera de una familia.</div>
       </motion.div>
