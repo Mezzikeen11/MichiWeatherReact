@@ -90,7 +90,7 @@ export default function Navbar() {
             </div>
 
             <Link to="/adoptalos" className="font-semibold text-sm text-[var(--tx)]">
-              Adóptalos
+              Adoptalos
             </Link>
 
             <Link to="/nosotros" className="font-semibold text-sm text-[var(--tx)]">
