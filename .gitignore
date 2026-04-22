@@ -1,0 +1,25 @@
+# root
+node_modules
+.DS_Store
+
+# backend
+backend/node_modules
+backend/.env
+backend/.env.*
+!backend/.env.example
+backend/logs
+backend/*.log
+
+# frontend
+frontend/node_modules
+frontend/dist
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+frontend/*.local
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.sw?

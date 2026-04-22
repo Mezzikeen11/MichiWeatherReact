@@ -2,27 +2,41 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const weatherRoutes = require("./routes/weatherRoutes");
 const authRoutes = require("./routes/authRoutes");
 const db = require("./config/db");
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
-/**
- * Health check REAL (despierta backend + DB)
- */
+const allowedOrigin = process.env.CORS_ORIGIN || "*";
+
+app.use(helmet());
+app.use(
+  cors({
+    origin: allowedOrigin === "*" ? true : allowedOrigin,
+  })
+);
+app.use(express.json());
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 300,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
+
 app.get("/health", async (req, res) => {
   try {
     await db.raw("SELECT 1");
-    res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true });
   } catch (err) {
-    res.status(500).json({ ok: false, db: "down" });
+    return res.status(500).json({ ok: false, db: "down" });
   }
 });
 
-// Rutas API
 app.use("/api/weather", weatherRoutes);
 app.use("/api/auth", authRoutes);
 

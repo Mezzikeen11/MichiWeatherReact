@@ -2,12 +2,21 @@ const db = require("../config/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const JWT_SECRET = process.env.JWT_SECRET; // ..
+const JWT_SECRET = process.env.JWT_SECRET;
 
-// ---------------------- REGISTRO ----------------------
+const validateAuthEnv = () => {
+  if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET no está configurado");
+  }
+};
+
 const register = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
+
+    if (!nombre || !email || !password) {
+      return res.status(400).json({ message: "Nombre, email y contraseña son obligatorios" });
+    }
 
     const existe = await db("usuarios").where({ email }).first();
     if (existe) return res.status(400).json({ message: "Usuario ya registrado" });
@@ -20,18 +29,22 @@ const register = async (req, res) => {
       password: hashed,
     });
 
-    res.json({ message: "Usuario registrado correctamente" });
-
+    return res.json({ message: "Usuario registrado correctamente" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error en el servidor" });
+    return res.status(500).json({ message: "Error en el servidor" });
   }
 };
 
-// ---------------------- LOGIN ----------------------
 const login = async (req, res) => {
   try {
+    validateAuthEnv();
+
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email y contraseña son obligatorios" });
+    }
 
     const user = await db("usuarios").where({ email }).first();
 
@@ -45,14 +58,13 @@ const login = async (req, res) => {
     return res.json({
       message: "Login exitoso",
       token,
-      nombre: user.nombre,     // ...
-      email: user.email,       // ...
-      id: user.id              
+      nombre: user.nombre,
+      email: user.email,
+      id: user.id,
     });
-
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error en el servidor" });
+    return res.status(500).json({ message: "Error en el servidor" });
   }
 };
 

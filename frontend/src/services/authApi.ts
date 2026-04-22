@@ -1,7 +1,7 @@
-const API = "https://michiweather-backend.onrender.com/api/auth";
+import { API_ROUTES } from "../config/api";
 
 export async function loginUser(email: string, password: string) {
-  const res = await fetch(`${API}/login`, {
+  const res = await fetch(`${API_ROUTES.auth}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -21,7 +21,7 @@ export async function registerUser(
   email: string,
   password: string
 ) {
-  const res = await fetch(`${API}/register`, {
+  const res = await fetch(`${API_ROUTES.auth}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ nombre, email, password }),
@@ -35,4 +35,3 @@ export async function registerUser(
 
   return data;
 }
-
