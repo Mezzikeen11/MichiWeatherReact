@@ -2,8 +2,6 @@ const db = require("./config/db");
 
 const setup = async () => {
   try {
-
-    // ---------------- USUARIOS ----------------
     const existeUsuarios = await db.schema.hasTable("usuarios");
     if (!existeUsuarios) {
       await db.schema.createTable("usuarios", (table) => {
@@ -16,7 +14,6 @@ const setup = async () => {
       console.log("✅ Tabla usuarios creada");
     }
 
-    // ---------------- CONSULTAS ----------------
     const existeConsultas = await db.schema.hasTable("consultas");
     if (!existeConsultas) {
       await db.schema.createTable("consultas", (table) => {
@@ -30,7 +27,6 @@ const setup = async () => {
       console.log("✅ Tabla consultas creada");
     }
 
-    // ---------------- CACHE ----------------
     const existeCache = await db.schema.hasTable("cache");
     if (!existeCache) {
       await db.schema.createTable("cache", (table) => {
@@ -43,10 +39,16 @@ const setup = async () => {
     }
 
     console.log("✅ Base de datos lista");
-
   } catch (error) {
     console.error("❌ Error creando tablas:", error);
+    throw error;
   }
 };
+
+if (require.main === module) {
+  setup()
+    .then(() => process.exit(0))
+    .catch(() => process.exit(1));
+}
 
 module.exports = setup;
