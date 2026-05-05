@@ -53,6 +53,13 @@ html {
   --michi-body: #121212;
   --michi-eye: #fdd835;
   --michi-nose: #ffb6c1;
+  
+  /*Searchbar*/
+  --search-bg: rgba(255, 255, 255, 0.82);
+  --search-dropdown: #ffffff;
+  --search-text: #133217;
+  --search-placeholder: #6b7b68;
+  --search-hover: rgba(46, 125, 30, 0.10);
 }
 
 [data-theme="dark"] {
@@ -89,6 +96,13 @@ html {
   --michi-body: #e6f5e9;
   --michi-eye: #9cff57;
   --michi-nose: #ff9eb5;
+
+  /*Searchbar*/
+  --search-bg: rgba(13, 28, 19, 0.92);
+  --search-dropdown: #102619;
+  --search-text: #f2f7f1;
+  --search-placeholder: #9db69a;
+  --search-hover: rgba(115, 209, 0, 0.13);
 }
 
 /* =========================================================
@@ -417,4 +431,50 @@ html {
 .cat.hiding .eye {
   height: 4px;
   margin-top: 12px;
+}
+
+/*Scroll searchbar*/
+.mw-search-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.mw-search-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mw-search-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mw-search-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 9999px;
+}
+
+.mw-search-scroll::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.05);
+}
+
+/*Scrollbar perfil*/
+.mw-profile-list-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.mw-profile-list-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mw-profile-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mw-profile-list-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 9999px;
+}
+
+.mw-profile-list-scroll::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.05);
 }

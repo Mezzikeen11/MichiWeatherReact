@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import {
-  FiClock,
-  FiMapPin,
-  FiSearch,
-  FiStar,
-} from "react-icons/fi";
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type MouseEvent,
+} from "react";
+import { FiClock, FiMapPin, FiSearch, FiStar } from "react-icons/fi";
 import { searchCities } from "../services/weatherApi";
 
 type CityResult = {
@@ -34,6 +36,7 @@ function readJsonArray<T>(key: string): T[] {
   try {
     const raw = localStorage.getItem(key);
     if (!raw) return [];
+
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
@@ -49,12 +52,25 @@ function getCityLabel(city: CityResult | StoredCityDetail) {
   return city.display || city.name;
 }
 
-function sameCity(a: CityResult | StoredCityDetail, b: CityResult | StoredCityDetail) {
-  if (typeof a.lat === "number" && typeof b.lat === "number") {
+function sameCity(
+  a: CityResult | StoredCityDetail,
+  b: CityResult | StoredCityDetail
+) {
+  if (
+    typeof a.lat === "number" &&
+    typeof a.lon === "number" &&
+    typeof b.lat === "number" &&
+    typeof b.lon === "number" &&
+    a.lat !== 0 &&
+    b.lat !== 0
+  ) {
     return a.lat === b.lat && a.lon === b.lon;
   }
 
-  return getCityLabel(a).trim().toLowerCase() === getCityLabel(b).trim().toLowerCase();
+  return (
+    getCityLabel(a).trim().toLowerCase() ===
+    getCityLabel(b).trim().toLowerCase()
+  );
 }
 
 function saveDetailedHistory(city: CityResult) {
@@ -67,9 +83,10 @@ function saveDetailedHistory(city: CityResult) {
   const updatedSimple = [
     simpleLabel,
     ...currentSimple.filter(
-      (item) => item.trim().toLowerCase() !== simpleLabel.trim().toLowerCase()
+      (item) =>
+        item.trim().toLowerCase() !== simpleLabel.trim().toLowerCase()
     ),
-  ].slice(0, 10);
+  ].slice(0, 12);
 
   const detailedEntry: StoredCityDetail = {
     ...city,
@@ -79,7 +96,7 @@ function saveDetailedHistory(city: CityResult) {
   const updatedDetailed = [
     detailedEntry,
     ...currentDetailed.filter((item) => !sameCity(item, city)),
-  ].slice(0, 10);
+  ].slice(0, 12);
 
   writeJsonArray(HISTORY_KEY, updatedSimple);
   writeJsonArray(HISTORY_DETAIL_KEY, updatedDetailed);
@@ -95,12 +112,17 @@ function toggleDetailedFavorite(city: CityResult) {
 
   if (exists) {
     const updatedSimple = currentSimple.filter(
-      (item) => item.trim().toLowerCase() !== simpleLabel.trim().toLowerCase()
+      (item) =>
+        item.trim().toLowerCase() !== simpleLabel.trim().toLowerCase()
     );
-    const updatedDetailed = currentDetailed.filter((item) => !sameCity(item, city));
+
+    const updatedDetailed = currentDetailed.filter(
+      (item) => !sameCity(item, city)
+    );
 
     writeJsonArray(FAVORITES_KEY, updatedSimple);
     writeJsonArray(FAVORITES_DETAIL_KEY, updatedDetailed);
+
     return false;
   }
 
@@ -109,10 +131,14 @@ function toggleDetailedFavorite(city: CityResult) {
     savedAt: new Date().toISOString(),
   };
 
-  const updatedSimple = [simpleLabel, ...currentSimple].filter(
-    (item, index, arr) =>
-      arr.findIndex((x) => x.trim().toLowerCase() === item.trim().toLowerCase()) === index
-  ).slice(0, 12);
+  const updatedSimple = [simpleLabel, ...currentSimple]
+    .filter(
+      (item, index, arr) =>
+        arr.findIndex(
+          (x) => x.trim().toLowerCase() === item.trim().toLowerCase()
+        ) === index
+    )
+    .slice(0, 12);
 
   const updatedDetailed = [
     favoriteEntry,
@@ -121,6 +147,7 @@ function toggleDetailedFavorite(city: CityResult) {
 
   writeJsonArray(FAVORITES_KEY, updatedSimple);
   writeJsonArray(FAVORITES_DETAIL_KEY, updatedDetailed);
+
   return true;
 }
 
@@ -148,14 +175,17 @@ export default function SearchBar({
   }, []);
 
   useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
+    const handleOutsideClick = (event: globalThis.MouseEvent) => {
       if (!containerRef.current?.contains(event.target as Node)) {
         setShow(false);
       }
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
-    return () => document.removeEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
   }, []);
 
   useEffect(() => {
@@ -170,6 +200,7 @@ export default function SearchBar({
 
       try {
         setLoading(true);
+
         const res = await searchCities(value);
         setResults(res || []);
       } catch {
@@ -179,7 +210,9 @@ export default function SearchBar({
       }
     }, 220);
 
-    return () => window.clearTimeout(timeout);
+    return () => {
+      window.clearTimeout(timeout);
+    };
   }, [query]);
 
   const showQuickAccess = query.trim().length < 2;
@@ -188,7 +221,11 @@ export default function SearchBar({
     if (query.trim().length < 2) {
       return "Escribe al menos 2 letras para buscar.";
     }
-    if (loading) return "Buscando ciudades...";
+
+    if (loading) {
+      return "Buscando ciudades...";
+    }
+
     return "No encontramos coincidencias.";
   }, [loading, query]);
 
@@ -199,6 +236,7 @@ export default function SearchBar({
 
   function handleSelect(city: CityResult | StoredCityDetail) {
     const cityQuery = getCityLabel(city);
+
     const normalizedCity: CityResult = {
       name: city.name,
       display: city.display,
@@ -218,7 +256,7 @@ export default function SearchBar({
   }
 
   function handleToggleFavorite(
-    event: React.MouseEvent<HTMLButtonElement>,
+    event: MouseEvent<HTMLButtonElement>,
     city: CityResult | StoredCityDetail
   ) {
     event.stopPropagation();
@@ -242,7 +280,7 @@ export default function SearchBar({
 
   return (
     <div ref={containerRef} className="relative w-full max-w-[420px]">
-      <div className="flex items-center gap-2 rounded-full bg-[var(--white)]/70 px-3 py-2 shadow-michi-1 backdrop-blur-sm">
+      <div className="flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--search-bg)] px-3 py-2 shadow-michi-1 backdrop-blur-sm transition focus-within:border-[var(--accent)] focus-within:ring-4 focus-within:ring-[var(--accent-soft)]">
         <FiSearch className="shrink-0 text-[var(--accent)]" />
 
         <input
@@ -254,13 +292,13 @@ export default function SearchBar({
             refreshStoredData();
           }}
           placeholder="Buscar ciudad..."
-          className="w-full rounded-full bg-transparent text-sm text-[var(--text-strong)] outline-none placeholder:text-[var(--text-soft)]"
+          className="w-full rounded-full bg-transparent text-sm font-medium text-[var(--search-text)] outline-none placeholder:text-[var(--search-placeholder)]"
           aria-label="Buscar ciudad"
         />
       </div>
 
       {show && (
-        <div className="absolute left-0 right-0 z-50 mt-2 max-h-80 overflow-y-auto rounded-2xl border border-[var(--line)] bg-[var(--panel)] shadow-michi-1">
+        <div className="mw-search-scroll absolute left-0 right-0 z-50 mt-2 max-h-80 overflow-y-auto rounded-2xl border border-[var(--line)] bg-[var(--search-dropdown)] shadow-michi-1">
           {showQuickAccess ? (
             <div className="p-2">
               {favoriteCities.length > 0 && (
@@ -272,15 +310,15 @@ export default function SearchBar({
                   <div className="space-y-1">
                     {favoriteCities.slice(0, 4).map((city, index) => (
                       <div
-                        key={`${city.lat}-${city.lon}-${index}`}
-                        className="flex items-center gap-2 rounded-xl px-2 py-1 hover:bg-[var(--accent)]/10"
+                        key={`${getCityLabel(city)}-${index}`}
+                        className="flex items-center gap-2 rounded-xl px-2 py-1 transition hover:bg-[var(--search-hover)]"
                       >
                         <button
                           type="button"
                           onClick={() => handleSelect(city)}
                           className="flex min-w-0 flex-1 items-start gap-3 py-2 text-left"
                         >
-                          <span className="mt-0.5 rounded-full bg-[var(--accent)]/10 p-2 text-[var(--accent)]">
+                          <span className="mt-0.5 rounded-full bg-[var(--accent-soft)] p-2 text-[var(--accent)]">
                             <FiStar />
                           </span>
 
@@ -288,16 +326,21 @@ export default function SearchBar({
                             <span className="block truncate text-sm font-semibold text-[var(--text-strong)]">
                               {getCityLabel(city)}
                             </span>
+
                             <span className="block truncate text-xs text-[var(--text-soft)]">
-                              {[city.state, city.country].filter(Boolean).join(", ")}
+                              {[city.state, city.country]
+                                .filter(Boolean)
+                                .join(", ") || "Ciudad favorita"}
                             </span>
                           </span>
                         </button>
 
                         <button
                           type="button"
-                          onClick={(event) => handleToggleFavorite(event, city)}
-                          className="rounded-full p-2 text-[var(--accent)] transition hover:bg-[var(--accent)]/10"
+                          onClick={(event) =>
+                            handleToggleFavorite(event, city)
+                          }
+                          className="rounded-full p-2 text-[var(--accent)] transition hover:bg-[var(--accent-soft)]"
                           aria-label="Quitar de favoritas"
                         >
                           <FiStar />
@@ -317,15 +360,15 @@ export default function SearchBar({
                   <div className="space-y-1">
                     {recentHistory.slice(0, 5).map((city, index) => (
                       <div
-                        key={`${city.lat}-${city.lon}-${index}`}
-                        className="flex items-center gap-2 rounded-xl px-2 py-1 hover:bg-[var(--accent)]/10"
+                        key={`${getCityLabel(city)}-${index}`}
+                        className="flex items-center gap-2 rounded-xl px-2 py-1 transition hover:bg-[var(--search-hover)]"
                       >
                         <button
                           type="button"
                           onClick={() => handleSelect(city)}
                           className="flex min-w-0 flex-1 items-start gap-3 py-2 text-left"
                         >
-                          <span className="mt-0.5 rounded-full bg-[var(--accent)]/10 p-2 text-[var(--accent)]">
+                          <span className="mt-0.5 rounded-full bg-[var(--accent-soft)] p-2 text-[var(--accent)]">
                             <FiClock />
                           </span>
 
@@ -333,19 +376,24 @@ export default function SearchBar({
                             <span className="block truncate text-sm font-semibold text-[var(--text-strong)]">
                               {getCityLabel(city)}
                             </span>
+
                             <span className="block truncate text-xs text-[var(--text-soft)]">
-                              {[city.state, city.country].filter(Boolean).join(", ")}
+                              {[city.state, city.country]
+                                .filter(Boolean)
+                                .join(", ") || "Consulta reciente"}
                             </span>
                           </span>
                         </button>
 
                         <button
                           type="button"
-                          onClick={(event) => handleToggleFavorite(event, city)}
+                          onClick={(event) =>
+                            handleToggleFavorite(event, city)
+                          }
                           className={`rounded-full p-2 transition ${
                             isFavorite(city)
-                              ? "text-[var(--accent)]"
-                              : "text-[var(--text-soft)] hover:text-[var(--accent)]"
+                              ? "text-[var(--accent)] hover:bg-[var(--accent-soft)]"
+                              : "text-[var(--text-soft)] hover:bg-[var(--accent-soft)] hover:text-[var(--accent)]"
                           }`}
                           aria-label="Guardar en favoritas"
                         >
@@ -368,14 +416,14 @@ export default function SearchBar({
               {results.map((city, index) => (
                 <div
                   key={`${city.lat}-${city.lon}-${index}`}
-                  className="flex items-center gap-2 rounded-xl px-2 py-1 hover:bg-[var(--accent)]/10"
+                  className="flex items-center gap-2 rounded-xl px-2 py-1 transition hover:bg-[var(--search-hover)]"
                 >
                   <button
                     type="button"
                     onClick={() => handleSelect(city)}
                     className="flex min-w-0 flex-1 items-start gap-3 py-2 text-left"
                   >
-                    <span className="mt-0.5 rounded-full bg-[var(--accent)]/10 p-2 text-[var(--accent)]">
+                    <span className="mt-0.5 rounded-full bg-[var(--accent-soft)] p-2 text-[var(--accent)]">
                       <FiMapPin />
                     </span>
 
@@ -383,9 +431,12 @@ export default function SearchBar({
                       <span className="block truncate text-sm font-semibold text-[var(--text-strong)]">
                         {city.name}
                       </span>
+
                       <span className="block truncate text-xs text-[var(--text-soft)]">
                         {city.display ||
-                          `${city.name}${city.country ? `, ${city.country}` : ""}`}
+                          `${city.name}${
+                            city.country ? `, ${city.country}` : ""
+                          }`}
                       </span>
                     </span>
                   </button>
@@ -395,8 +446,8 @@ export default function SearchBar({
                     onClick={(event) => handleToggleFavorite(event, city)}
                     className={`rounded-full p-2 transition ${
                       isFavorite(city)
-                        ? "text-[var(--accent)]"
-                        : "text-[var(--text-soft)] hover:text-[var(--accent)]"
+                        ? "text-[var(--accent)] hover:bg-[var(--accent-soft)]"
+                        : "text-[var(--text-soft)] hover:bg-[var(--accent-soft)] hover:text-[var(--accent)]"
                     }`}
                     aria-label="Guardar en favoritas"
                   >

@@ -342,10 +342,12 @@ export default function ProfilePage() {
               </h2>
             </div>
 
-            <FavoriteCities
-              cities={profileData.favorites}
-              homeCity={profileData.homeCity}
-            />
+            <div className="mw-profile-list-scroll max-h-[420px] overflow-y-auto pr-2 py-1">
+              <FavoriteCities
+                cities={profileData.favorites}
+                homeCity={profileData.homeCity}
+              />
+            </div>
           </div>
 
           <div className="rounded-3xl bg-[var(--panel)] p-6 shadow-michi-1">
@@ -360,36 +362,37 @@ export default function ProfilePage() {
             </div>
 
             {profileData.history.length > 0 ? (
-              <div className="grid gap-3">
-                {profileData.history.slice(0, 8).map((item, index) => {
-                  const label = item.display || item.name;
+              <div className="mw-profile-list-scroll max-h-[420px] overflow-y-auto pr-2 py-1">
+                <div className="grid gap-3">
+                  {profileData.history.map((item, index) => {
+                    const label = item.display || item.name;
 
-                  return (
-                    <Link
-                      key={`${label}-${index}`}
-                      to={`/weather/${encodeURIComponent(label)}`}
-                      className="block rounded-2xl bg-[var(--panel2)] px-4 py-3 shadow-michi-1 transition hover:bg-[var(--accent)]/10"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="truncate font-semibold text-[var(--text-strong)]">
-                            {label}
-                          </p>
+                    return (
+                      <Link
+                        key={`${label}-${index}`}
+                        to={`/weather/${encodeURIComponent(label)}`}
+                        className="block rounded-2xl bg-[var(--panel2)] px-4 py-3 shadow-michi-1 transition hover:bg-[var(--accent)]/10"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="truncate font-semibold text-[var(--text-strong)]">
+                              {label}
+                            </p>
 
-                          <p className="mt-1 truncate text-sm text-[var(--text-soft)]">
-                            {[item.state, item.country]
-                              .filter(Boolean)
-                              .join(", ") || "Consulta guardada"}
-                          </p>
+                            <p className="mt-1 truncate text-sm text-[var(--text-soft)]">
+                              {[item.state, item.country].filter(Boolean).join(", ") ||
+                                "Consulta guardada"}
+                            </p>
+                          </div>
+
+                          <span className="shrink-0 text-xs text-[var(--text-soft)]">
+                            {formatDate(item.savedAt)}
+                          </span>
                         </div>
-
-                        <span className="shrink-0 text-xs text-[var(--text-soft)]">
-                          {formatDate(item.savedAt)}
-                        </span>
-                      </div>
-                    </Link>
-                  );
-                })}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               <div className="rounded-2xl bg-[var(--panel2)] p-4">
