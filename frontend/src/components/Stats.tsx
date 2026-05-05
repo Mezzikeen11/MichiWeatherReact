@@ -1,4 +1,4 @@
-import { WiUmbrella, WiHumidity, WiStrongWind } from "react-icons/wi";
+import { WiHumidity, WiStrongWind, WiUmbrella } from "react-icons/wi";
 
 interface StatsProps {
   propLLuvia: number;
@@ -11,29 +11,48 @@ export default function Stats({
   propHumedad,
   propViento,
 }: StatsProps) {
-
   const stats = [
-    { icon: <WiUmbrella />, value: `${propLLuvia}%` },
-    { icon: <WiHumidity />, value: `${propHumedad}%` },
-    { icon: <WiStrongWind />, value: `${propViento} km/h` },
+    {
+      label: "Lluvia",
+      value: `${propLLuvia}%`,
+      icon: WiUmbrella,
+    },
+    {
+      label: "Humedad",
+      value: `${propHumedad}%`,
+      icon: WiHumidity,
+    },
+    {
+      label: "Viento",
+      value: `${propViento} km/h`,
+      icon: WiStrongWind,
+    },
   ];
 
   return (
-    <div className="w-full px-4 sm:px-0 py-4">
-      <div className="flex flex-row flex-wrap justify-center items-center gap-4 w-full overflow-x-auto pb-3 scroll-hidden">
-        {stats.map((s, idx) => (
-          <div key={idx} className="flex flex-col items-center text-center min-w-[80px] sm:min-w-[110px]">
-            <div className="w-[95px] h-[95px] sm:w-[110px] sm:h-[110px] rounded-full bg-[var(--panel)] flex flex-col items-center justify-center shadow-michi-1">
-              <div className="text-3xl sm:text-4xl text-[var(--accent)] mb-1">
-                {s.icon}
+    <section aria-label="Estadísticas del clima" className="w-full">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {stats.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <article
+              key={item.label}
+              className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] px-4 py-4 shadow-michi-1"
+            >
+              <div className="flex flex-col items-center text-center">
+                <Icon className="text-4xl text-[var(--accent)]" aria-hidden />
+                <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-[var(--text-soft)]">
+                  {item.label}
+                </p>
+                <p className="mt-1 text-xl font-extrabold text-[var(--text-strong)]">
+                  {item.value}
+                </p>
               </div>
-              <p className="font-semibold text-sm text-[var(--tx)]">
-                {s.value}
-              </p>
-            </div>
-          </div>
-        ))}
+            </article>
+          );
+        })}
       </div>
-    </div>
+    </section>
   );
 }

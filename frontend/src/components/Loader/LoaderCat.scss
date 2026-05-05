@@ -1,12 +1,13 @@
 /* ================================
    LOADER – GATO GIRATORIO AISLADO
 ================================ */
+@use "sass:math";
 
 .loader-cat {
   /* ---------------- Variables ---------------- */
   $angleSpan: 40deg;
   $dur: 2s;
-  $delayInc: $dur / 100;
+  $delayInc: math.div($dur, 100);
   $segments: 30;
   $timing: cubic-bezier(0.6,0,0.4,1);
   $playState: running;
@@ -105,8 +106,8 @@
   }
 
   /* ---------------- Segment rotation y delay ---------------- */
-  $negAngleHalf: -$angleSpan / 2;
-  $angleInc: $angleSpan / $segments;
+  $negAngleHalf: math.div(-$angleSpan, 2);
+  $angleInc: math.div($angleSpan, $segments);
 
   @for $s from 1 through $segments {
     &__cat__segment:nth-of-type(#{$s}) {

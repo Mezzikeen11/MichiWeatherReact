@@ -10,15 +10,36 @@ const db = require("./config/db");
 
 const app = express();
 
-const allowedOrigin = process.env.CORS_ORIGIN || "*";
+const exactOrigins = [
+  process.env.CORS_ORIGIN,
+  "https://michiweatherreact.pages.dev",
+  "http://localhost:5173",
+  "http://localhost:4173",
+].filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  if (exactOrigins.includes(origin)) return true;
+
+  return /^https:\/\/[a-z0-9-]+\.michiweatherreact\.pages\.dev$/.test(origin);
+};
 
 app.use(helmet());
+
 app.use(
   cors({
-    origin: allowedOrigin === "*" ? true : allowedOrigin,
+    origin(origin, callback) {
+      if (isAllowedOrigin(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Origen no permitido por CORS: ${origin}`));
+    },
+    credentials: true,
   })
 );
+
 app.use(express.json());
+
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -28,11 +49,11 @@ app.use(
   })
 );
 
-app.get("/health", async (req, res) => {
+app.get("/health", async (_req, res) => {
   try {
     await db.raw("SELECT 1");
     return res.status(200).json({ ok: true });
-  } catch (err) {
+  } catch (_err) {
     return res.status(500).json({ ok: false, db: "down" });
   }
 });

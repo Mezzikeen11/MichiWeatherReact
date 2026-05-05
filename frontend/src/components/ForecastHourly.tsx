@@ -1,4 +1,3 @@
-// src/components/ForecastHourly.tsx
 import {
   WiDaySunny,
   WiCloud,
@@ -18,32 +17,17 @@ interface ForecastHourlyProps {
   data?: HourlyForecast[];
 }
 
-// Decide qué ícono usar según OpenWeather
 function getIconByWeatherCode(code?: number) {
-  if (code === undefined) return null;
+  if (code === undefined) return WiCloud;
 
-  // Tormenta
   if (code >= 200 && code <= 232) return WiThunderstorm;
-
-  // Llovizna
   if (code >= 300 && code <= 321) return WiRain;
-
-  // Lluvia
   if (code >= 500 && code <= 531) return WiRain;
-
-  // Nieve
   if (code >= 600 && code <= 622) return WiSnow;
-
-  // Niebla / atmósfera
   if (code >= 701 && code <= 781) return WiFog;
-
-  // Cielo despejado
   if (code === 800) return WiDaySunny;
-
-  // Nubes
   if (code >= 801 && code <= 804) return WiCloud;
 
-  // Fallback
   return WiCloud;
 }
 
@@ -52,29 +36,25 @@ export default function ForecastHourly({ data = [] }: ForecastHourlyProps) {
 
   return (
     <section aria-label="Pronóstico por horas" className="w-full">
-      <div className="flex gap-4 min-w-max">
+      <div className="flex gap-3 min-w-max">
         {data.map((hour, i) => {
           const IconComponent = getIconByWeatherCode(hour.weatherCode);
 
           return (
             <div
-              key={i}
-              className="min-w-[120px] bg-[var(--panel)]/90 dark:bg-[var(--glass)] rounded-xl p-4 shadow-michi-1 flex flex-col items-center justify-center hover:scale-[1.03] transition"
+              key={`${hour.hour}-${i}`}
+              className="min-w-[88px] bg-[var(--panel)]/95 rounded-xl p-3 shadow-michi-1 flex flex-col items-center justify-center transition hover:scale-[1.02]"
             >
-              <p className="text-sm font-semibold text-[var(--muted)]">
+              <p className="text-xs font-semibold text-[var(--text-soft)]">
                 {hour.hour}
               </p>
 
-              {IconComponent ? (
-                <IconComponent
-                  className="text-[var(--dark)] dark:text-[var(--accent)] text-3xl my-2"
-                  aria-hidden
-                />
-              ) : (
-                <div className="w-8 h-8 my-2" />
-              )}
+              <IconComponent
+                className="text-[var(--accent)] text-4xl my-1"
+                aria-hidden
+              />
 
-              <p className="text-lg font-bold text-[var(--accent)]">
+              <p className="text-lg font-bold text-[var(--text-strong)]">
                 {hour.temp}°
               </p>
             </div>

@@ -1,4 +1,3 @@
-// src/components/ForecastWeekly.tsx
 import type { IconType } from "react-icons";
 import {
   WiDaySunny,
@@ -10,20 +9,18 @@ import {
   WiThunderstorm,
 } from "react-icons/wi";
 
-// Tipo del pronóstico diario
 export interface ForecastDay {
   day: string;
   icon?: string;
+  weatherCode?: number;
   max: number;
   min: number;
 }
 
-// Props
 interface ForecastWeeklyProps {
   data?: ForecastDay[];
 }
 
-// Mapeo de nombres → React Icons
 const iconMap: Record<string, IconType> = {
   sol: WiDaySunny,
   soleado: WiDaySunny,
@@ -38,38 +35,50 @@ const iconMap: Record<string, IconType> = {
   noche: WiNightClear,
 };
 
+function getIconByWeatherCode(code?: number): IconType {
+  if (code === undefined) return WiCloud;
+
+  if (code >= 200 && code <= 232) return WiThunderstorm;
+  if (code >= 300 && code <= 321) return WiRain;
+  if (code >= 500 && code <= 531) return WiRain;
+  if (code >= 600 && code <= 622) return WiSnow;
+  if (code >= 701 && code <= 781) return WiFog;
+  if (code === 800) return WiDaySunny;
+  if (code >= 801 && code <= 804) return WiCloud;
+
+  return WiCloud;
+}
+
 export default function ForecastWeekly({ data = [] }: ForecastWeeklyProps) {
   if (!Array.isArray(data) || data.length === 0) return null;
 
   return (
     <section aria-label="Pronóstico semanal" className="w-full">
-      <div className="flex gap-4 min-w-max">
+      <div className="flex gap-3 min-w-max">
         {data.map((d, i) => {
-          const IconComponent = d.icon ? iconMap[d.icon] : null;
+          const IconComponent = d.icon
+            ? iconMap[d.icon] || WiCloud
+            : getIconByWeatherCode(d.weatherCode);
 
           return (
             <div
-              key={i}
-              className="min-w-[120px] bg-[var(--panel)]/90 dark:bg-[var(--glass)] rounded-xl p-4 shadow-michi-1 flex flex-col items-center justify-center hover:scale-[1.03] transition"
+              key={`${d.day}-${i}`}
+              className="min-w-[94px] bg-[var(--panel)]/95 rounded-xl p-3 shadow-michi-1 flex flex-col items-center justify-center transition hover:scale-[1.02]"
             >
-              <p className="text-sm font-semibold text-[var(--muted)]">
+              <p className="text-xs font-semibold text-[var(--text-soft)]">
                 {d.day}
               </p>
 
-              {IconComponent ? (
-                <IconComponent
-                  className="text-[var(--dark)] dark:text-[var(--accent)] text-3xl my-2"
-                  aria-hidden
-                />
-              ) : (
-                <div className="w-8 h-8 my-2" />
-              )}
+              <IconComponent
+                className="text-[var(--accent)] text-4xl my-1"
+                aria-hidden
+              />
 
               <div className="flex flex-col items-center">
-                <span className="text-lg font-bold text-[var(--accent)]">
+                <span className="text-lg font-bold text-[var(--text-strong)]">
                   {d.max}°
                 </span>
-                <span className="text-sm text-[var(--muted)]">
+                <span className="text-sm text-[var(--text-soft)]">
                   {d.min}°
                 </span>
               </div>

@@ -7,6 +7,7 @@
 
 html {
   color-scheme: light;
+  scroll-behavior: smooth;
 }
 
 [data-theme="dark"] {
@@ -19,16 +20,33 @@ html {
 
 :root {
   --bg: #F7FBF4;
+  --bg-elevated: #F9FCF7;
   --tx: #000000;
+
   --panel: #E4F3DC;
   --panel2: #F6FBF5;
+
   --accent: #2E7D1E;
+  --accent-strong: #1F5A14;
+  --accent-soft: rgba(46, 125, 30, 0.10);
+
   --muted: #3A4C3A;
+  --text-main: #133217;
+  --text-muted: #5E6F5D;
+  --text-strong: #133217;
+  --text-soft: #5E6F5D;
+
   --dark: #133217;
   --white: #ffffff;
+
   --glass: rgba(104, 104, 104, 0.06);
   --border: 1px solid rgba(255,255,255,0.2);
+  --line: rgba(19, 50, 23, 0.10);
+
   --da: #ceecc671;
+
+  --shadow-soft: 0 18px 42px rgba(19, 50, 23, 0.08);
+  --shadow-card: 0 12px 28px rgba(19, 50, 23, 0.10);
 
   /* Michi */
   --michi-bg: #daf7a6;
@@ -39,15 +57,32 @@ html {
 
 [data-theme="dark"] {
   --bg: #09160f;
+  --bg-elevated: #0D1C13;
   --tx: #ffffff;
+
   --panel: #0a4d28;
-  --panel2:#156b3c;
-  --accent: #73d100e1 ;
+  --panel2: #156b3c;
+
+  --accent: #73d100e1;
+  --accent-strong: #A7F15B;
+  --accent-soft: rgba(115, 209, 0, 0.10);
+
   --muted: #9DB69A;
+  --text-main: #F2F7F1;
+  --text-muted: #B7C9B5;
+  --text-strong: #F2F7F1;
+  --text-soft: #B7C9B5;
+
   --white: #F2F7F1;
+
   --glass: rgba(255,255,255,0.04);
   --border: 1px solid rgba(32,65,18,0.2);
+  --line: rgba(242, 247, 241, 0.10);
+
   --da: #437154;
+
+  --shadow-soft: 0 20px 50px rgba(0,0,0,0.35);
+  --shadow-card: 0 14px 32px rgba(0,0,0,0.28);
 
   /* Michi dark */
   --michi-bg: #0f2a1a;
@@ -61,19 +96,46 @@ html {
 ========================================================= */
 
 @layer base {
-  html, body, #root {
-    height: 100%;
+  html,
+  body,
+  #root {
+    min-height: 100%;
   }
 
   body {
     font-family: 'Quicksand','League Spartan',Inter,system-ui,sans-serif;
-    background-color: var(--bg);
+    background:
+      radial-gradient(circle at top, rgba(46, 125, 30, 0.08), transparent 30%),
+      linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg) 45%, var(--bg) 100%);
     color: var(--tx);
     transition: background-color .3s ease, color .3s ease;
   }
 
   * {
+    box-sizing: border-box;
     color: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: white;
   }
 }
 
@@ -82,9 +144,117 @@ html {
 ========================================================= */
 
 @layer components {
-
   .container-michi {
-    @apply mx-auto w-[94%] max-w-[1200px];
+    width: 94%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mw-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-card);
+    border-radius: 28px;
+    backdrop-filter: blur(10px);
+  }
+
+  .mw-section-title {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    font-weight: 800;
+    color: var(--text-strong);
+  }
+
+  @media (min-width: 640px) {
+    .mw-section-title {
+      font-size: 1.875rem;
+    }
+  }
+
+  .mw-section-copy {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--text-soft);
+  }
+
+  @media (min-width: 640px) {
+    .mw-section-copy {
+      font-size: 1rem;
+    }
+  }
+
+  .mw-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    border: 1px solid var(--line);
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+
+  .mw-button-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    transition: 0.2s ease;
+    background: var(--accent);
+    color: white;
+    box-shadow: var(--shadow-card);
+  }
+
+  .mw-button-primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+  }
+
+  .mw-button-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    transition: 0.2s ease;
+    border: 1px solid var(--line);
+    background: var(--panel2);
+    color: var(--text-strong);
+  }
+
+  .mw-button-secondary:hover {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+
+  .mw-input {
+    width: 100%;
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: 0.2s ease;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--text-strong);
+  }
+
+  .mw-input::placeholder {
+    color: var(--text-soft);
+  }
+
+  .mw-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
   }
 
   .scroll-hidden::-webkit-scrollbar {
@@ -97,19 +267,42 @@ html {
   }
 }
 
-/* =========================================================
-   UTILIDADES
-========================================================= */
+.forecast-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) rgba(0, 0, 0, 0.08);
+}
 
-@layer utilities {
-  .shadow-michi-1 {
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-  }
+.forecast-scrollbar::-webkit-scrollbar {
+  height: 10px;
+}
+
+.forecast-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 9999px;
+}
+
+.forecast-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 9999px;
+}
+
+.forecast-scrollbar::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.05);
 }
 
 /* =========================================================
-   MICHI AVATAR
+   MICHI AVATAR LOGIN
 ========================================================= */
+
+.auth-michi-scale {
+  transform: scale(1.08);
+}
+
+@media (min-width: 640px) {
+  .auth-michi-scale {
+    transform: scale(1.14);
+  }
+}
 
 .cat-container {
   width: 160px;
@@ -120,6 +313,7 @@ html {
   justify-content: center;
   align-items: flex-end;
   overflow: hidden;
+  position: relative;
 }
 
 .cat {
@@ -129,10 +323,9 @@ html {
   border-radius: 50% 50% 30% 30%;
   position: relative;
   margin-bottom: -10px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Ears */
 .ear {
   width: 0;
   height: 0;
@@ -141,13 +334,23 @@ html {
   border-bottom: 40px solid var(--michi-body);
   position: absolute;
   top: -15px;
+  transition: transform 0.2s ease;
 }
 
-.ear.left { left: 5px; transform: rotate(-15deg); }
-.ear.right { right: 5px; transform: rotate(15deg); }
+.ear.left {
+  left: 5px;
+  transform: rotate(-15deg);
+}
 
-/* Face */
-.face { padding-top: 35px; text-align: center; }
+.ear.right {
+  right: 5px;
+  transform: rotate(15deg);
+}
+
+.face {
+  padding-top: 35px;
+  text-align: center;
+}
 
 .eye-row {
   display: flex;
@@ -162,6 +365,7 @@ html {
   border-radius: 50%;
   position: relative;
   overflow: hidden;
+  transition: height 0.2s ease, margin-top 0.2s ease;
 }
 
 .pupil {
@@ -172,6 +376,7 @@ html {
   position: absolute;
   top: 5px;
   left: 8px;
+  transition: transform 0.08s linear;
 }
 
 .nose {
@@ -182,8 +387,6 @@ html {
   margin: 8px auto;
 }
 
-/* Paws */
-
 .paw-left,
 .paw-right {
   width: 35px;
@@ -192,12 +395,16 @@ html {
   border-radius: 20px 20px 10px 10px;
   position: absolute;
   top: 120px;
+  transition: transform 0.25s ease;
 }
 
-.paw-left { left: 15px; }
-.paw-right { right: 15px; }
+.paw-left {
+  left: 15px;
+}
 
-/* Password hiding animation */
+.paw-right {
+  right: 15px;
+}
 
 .cat.hiding .paw-left {
   transform: translateY(-75px) rotate(10deg);
@@ -210,23 +417,4 @@ html {
 .cat.hiding .eye {
   height: 4px;
   margin-top: 12px;
-}
-
-/* =========================================================
-   AUTH INPUTS
-========================================================= */
-
-.auth-input {
-  width: 100%;
-  border: none;
-  border-bottom: 2px solid #cdecc0;
-  padding: 10px 0;
-  font-size: 14px;
-  outline: none;
-  background: transparent;
-  color: var(--tx);
-}
-
-.auth-input:focus {
-  border-bottom-color: var(--accent);
 }
