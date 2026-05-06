@@ -54,6 +54,7 @@ function readJsonArray<T>(key: string): T[] {
   try {
     const raw = localStorage.getItem(key);
     if (!raw) return [];
+
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
@@ -79,6 +80,7 @@ function makeDetailedCityEntry(city: City): StoredCityDetail {
 
 function addToHistory(city: City) {
   const label = city.location.trim();
+
   const currentSimple = readJsonArray<string>(HISTORY_KEY);
   const currentDetailed = readJsonArray<StoredCityDetail>(HISTORY_DETAIL_KEY);
 
@@ -111,27 +113,99 @@ function getWeatherAdvice(city: City) {
   const wind = city.stats?.viento ?? 0;
   const condition = city.condition.toLowerCase();
 
-  if (rain >= 60 || condition.includes("lluv")) {
-    return "Mantén a tu michi en un lugar seco y revisa que su zona de descanso no tenga humedad.";
+  const hasStorm =
+    condition.includes("torment") ||
+    (city.weatherCode !== undefined &&
+      city.weatherCode >= 200 &&
+      city.weatherCode <= 232);
+
+  const hasRain =
+    rain >= 55 ||
+    condition.includes("lluv") ||
+    condition.includes("chubasco") ||
+    (city.weatherCode !== undefined &&
+      city.weatherCode >= 500 &&
+      city.weatherCode <= 531);
+
+  const hasDrizzle =
+    condition.includes("lloviz") ||
+    (city.weatherCode !== undefined &&
+      city.weatherCode >= 300 &&
+      city.weatherCode <= 321);
+
+  if (hasStorm) {
+    return "Hay señales de tormenta. Mantén a tu michi dentro de casa, lejos de ventanas abiertas y con una zona tranquila para refugiarse.";
   }
 
-  if (temp >= 33) {
-    return "Hoy dale prioridad a sombra, agua fresca y un espacio ventilado para descansar.";
+  if (hasRain) {
+    return "Con lluvia, revisa que su cama, arenero y zona de descanso se mantengan secos y sin acumulación de humedad.";
+  }
+
+  if (hasDrizzle) {
+    return "Puede haber llovizna. Ten listo un espacio seco y evita que tu michi permanezca en zonas frías o mojadas.";
+  }
+
+  if (temp >= 38) {
+    return "El calor es extremo. Mantén a tu michi en un espacio fresco, con agua limpia disponible y evita actividad intensa durante el día.";
+  }
+
+  if (temp >= 34) {
+    return "Hace mucho calor. Prioriza agua fresca, sombra, ventilación y evita juegos intensos durante las horas más pesadas.";
+  }
+
+  if (temp >= 30) {
+    return "Día caluroso. Cambia el agua con frecuencia y procura que tu michi tenga un lugar fresco para descansar.";
+  }
+
+  if (temp >= 26) {
+    return "El clima está cálido. Mantén buena ventilación y revisa que tu michi tenga acceso constante a agua.";
+  }
+
+  if (temp <= 5) {
+    return "El ambiente está helado. Procura una zona muy abrigada, seca y sin corrientes de aire para tu michi.";
+  }
+
+  if (temp <= 10) {
+    return "Hace mucho frío. Prepara una cama cálida y evita que tu michi permanezca cerca de ventanas o pisos fríos.";
   }
 
   if (temp <= 15) {
-    return "Si refresca mucho, procura una cama cómoda y evita corrientes de aire directas.";
+    return "El ambiente está frío. Prepara una cama abrigada y evita corrientes de aire directas.";
   }
 
-  if (wind >= 28) {
-    return "Con viento fuerte, mejor descanso interior y menos acceso a zonas riesgosas.";
+  if (temp <= 20) {
+    return "Puede sentirse fresco. Observa si tu michi busca más abrigo o zonas cerradas para descansar.";
   }
 
-  if (humidity >= 80) {
-    return "Con mucha humedad, ventila el espacio y mantén limpio el arenero y la cama.";
+  if (wind >= 46) {
+    return "El viento está muy fuerte. Evita balcones, ventanas abiertas y objetos que puedan caer o asustar a tu michi.";
   }
 
-  return "Es un buen día para mantener rutina, hidratación y algo de juego tranquilo.";
+  if (wind >= 31) {
+    return "El viento está fuerte. Revisa ventanas, balcones y objetos que puedan caer o generar ruido excesivo.";
+  }
+
+  if (wind >= 16) {
+    return "Hay viento moderado. Conviene mantener a tu michi lejos de corrientes directas y zonas expuestas.";
+  }
+
+  if (humidity >= 81) {
+    return "La humedad es muy alta. Ventila el espacio, limpia el arenero con más frecuencia y revisa que su cama esté seca.";
+  }
+
+  if (humidity >= 66) {
+    return "El ambiente está húmedo. Mantén ventilada su zona de descanso y revisa que no se acumule olor o humedad.";
+  }
+
+  if (humidity <= 25) {
+    return "El ambiente está muy seco. Mantén agua disponible y observa si tu michi busca zonas más frescas o cómodas.";
+  }
+
+  if (humidity <= 40) {
+    return "El ambiente está seco. Asegura buena hidratación y evita que pase demasiado tiempo en zonas calientes o encerradas.";
+  }
+
+  return "El clima está estable. Mantén su rutina normal con agua limpia, descanso cómodo y un momento de juego tranquilo.";
 }
 
 export default function WeatherPage() {
@@ -170,15 +244,21 @@ export default function WeatherPage() {
       setCity(norm);
 
       if (params.city) {
-        const currentParam = decodeURIComponent(params.city).trim().toLowerCase();
+        const currentParam = decodeURIComponent(params.city)
+          .trim()
+          .toLowerCase();
+
         const normalizedCity = cityName.trim().toLowerCase();
 
         if (currentParam !== normalizedCity) {
-          navigate(`/weather/${encodeURIComponent(cityName)}`, { replace: true });
+          navigate(`/weather/${encodeURIComponent(cityName)}`, {
+            replace: true,
+          });
         }
       }
     } catch (err) {
       console.error(err);
+
       setError(
         err instanceof Error ? err.message : "No se pudo cargar la ciudad."
       );
@@ -209,6 +289,7 @@ export default function WeatherPage() {
 
   const isFavorite = useMemo(() => {
     if (!city?.location) return false;
+
     return favoriteCities.some(
       (item) => item.trim().toLowerCase() === city.location.trim().toLowerCase()
     );
@@ -216,6 +297,7 @@ export default function WeatherPage() {
 
   const isHomeCity = useMemo(() => {
     if (!city?.location) return false;
+
     return homeCity.trim().toLowerCase() === city.location.trim().toLowerCase();
   }, [homeCity, city?.location]);
 
@@ -223,6 +305,7 @@ export default function WeatherPage() {
     if (!city?.location) return;
 
     const currentCity = city.location.trim();
+
     const currentFavoritesSimple = readJsonArray<string>(FAVORITES_KEY);
     const currentFavoritesDetailed =
       readJsonArray<StoredCityDetail>(FAVORITES_DETAIL_KEY);
@@ -261,13 +344,14 @@ export default function WeatherPage() {
 
   function handleSetHomeCity() {
     if (!city?.location) return;
+
     localStorage.setItem(HOME_CITY_KEY, city.location);
     setHomeCity(city.location);
   }
 
   if (loading && !city) {
     return (
-      <main className="container-michi flex justify-center items-center min-h-[calc(100vh-160px)]">
+      <main className="container-michi flex min-h-[calc(100vh-160px)] items-center justify-center">
         {showLoader && <LoaderCat />}
       </main>
     );
@@ -275,24 +359,24 @@ export default function WeatherPage() {
 
   if (error && !city) {
     return (
-      <main className="container-michi min-h-[calc(100vh-160px)] flex items-center justify-center py-10">
-        <div className="w-full max-w-[620px] rounded-2xl bg-[var(--panel)] p-6 shadow-michi-1 text-center">
+      <main className="container-michi flex min-h-[calc(100vh-160px)] items-center justify-center py-10">
+        <div className="mw-card w-full max-w-[620px] rounded-3xl p-6 text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10">
-            <FiAlertCircle className="text-red-500 text-xl" />
+            <FiAlertCircle className="text-xl text-red-500" />
           </div>
 
           <h2 className="text-2xl font-bold text-[var(--text-strong)]">
             No pudimos cargar el clima
           </h2>
 
-          <p className="mt-3 text-sm sm:text-base text-[var(--text-soft)]">
+          <p className="mt-3 text-sm text-[var(--text-soft)] sm:text-base">
             {error}
           </p>
 
           <button
             type="button"
             onClick={() => void loadByName(requestedCity)}
-            className="mt-5 inline-flex items-center gap-2 h-10 px-5 rounded-full bg-[var(--accent)] text-white font-semibold shadow-michi-1"
+            className="mt-5 inline-flex h-10 items-center gap-2 rounded-full bg-[var(--accent)] px-5 font-semibold text-white shadow-michi-1"
           >
             <FiRefreshCw />
             Reintentar
@@ -304,13 +388,13 @@ export default function WeatherPage() {
 
   if (!city) {
     return (
-      <main className="container-michi min-h-[calc(100vh-160px)] flex items-center justify-center py-10">
-        <div className="w-full max-w-[620px] rounded-2xl bg-[var(--panel)] p-6 shadow-michi-1 text-center">
+      <main className="container-michi flex min-h-[calc(100vh-160px)] items-center justify-center py-10">
+        <div className="mw-card w-full max-w-[620px] rounded-3xl p-6 text-center">
           <h2 className="text-2xl font-bold text-[var(--text-strong)]">
             Busca una ciudad para ver el clima
           </h2>
 
-          <p className="mt-3 text-sm sm:text-base text-[var(--text-soft)]">
+          <p className="mt-3 text-sm text-[var(--text-soft)] sm:text-base">
             Puedes empezar por Cancún o usar el buscador del menú superior para
             consultar otra ciudad.
           </p>
@@ -320,24 +404,24 @@ export default function WeatherPage() {
   }
 
   return (
-    <main className="container-michi min-h-[calc(100vh-160px)] flex flex-col lg:flex-row items-center lg:items-start justify-center py-10 gap-10 lg:gap-12">
-      <div className="w-full lg:w-1/2 min-w-0 flex flex-col items-center">
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-5">
+    <main className="container-michi flex min-h-[calc(100vh-160px)] flex-col items-center justify-center gap-10 py-10 lg:flex-row lg:items-start lg:gap-12">
+      <div className="flex w-full min-w-0 flex-col items-center lg:w-1/2">
+        <div className="mb-5 flex flex-wrap items-center justify-center gap-3">
           {selectedCat ? (
-            <div className="inline-flex items-center gap-2 rounded-full bg-[var(--panel)] px-4 py-2 text-sm text-[var(--text-soft)] shadow-michi-1">
+            <div className="mw-surface-soft inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-[var(--text-soft)] shadow-michi-1">
               <FiHeart className="text-[var(--accent)]" />
               {selectedCat.name} activo
             </div>
           ) : (
             <>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[var(--panel)] px-4 py-2 text-sm text-[var(--text-soft)] shadow-michi-1">
+              <div className="mw-surface-soft inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-[var(--text-soft)] shadow-michi-1">
                 <FiHeart className="text-[var(--accent)]" />
                 Modo visita activado
               </div>
 
               <Link
                 to="/auth"
-                className="inline-flex items-center h-10 px-5 rounded-full bg-[var(--panel)] text-[var(--text-strong)] font-semibold shadow-michi-1 hover:bg-[var(--accent)]/10 transition"
+                className="mw-surface-soft inline-flex h-10 items-center rounded-full px-5 font-semibold text-[var(--text-strong)] shadow-michi-1 transition hover:bg-[var(--accent-soft)]"
               >
                 Iniciar sesión para personalizar
               </Link>
@@ -345,7 +429,7 @@ export default function WeatherPage() {
           )}
         </div>
 
-        <div className="flex justify-center w-full min-w-0">
+        <div className="flex w-full min-w-0 justify-center">
           <WeatherCard
             location={city.location}
             condition={city.condition}
@@ -358,26 +442,27 @@ export default function WeatherPage() {
         </div>
       </div>
 
-      <aside className="flex flex-col items-center gap-6 w-full lg:w-1/2 max-w-[520px] min-w-0 lg:mt-16">
+      <aside className="flex w-full min-w-0 max-w-[520px] flex-col items-center gap-6 lg:mt-16 lg:w-1/2">
         {advice && (
-          <div className="w-full rounded-2xl bg-[var(--panel)]/80 p-4 shadow-michi-1">
+          <div className="mw-card w-full rounded-3xl p-5">
             <p className="text-xs font-semibold uppercase tracking-wide text-[var(--accent)]">
               Consejo del día
             </p>
+
             <p className="mt-2 text-sm leading-6 text-[var(--text-strong)]">
               {advice}
             </p>
           </div>
         )}
 
-        <div className="flex flex-wrap justify-center gap-3 w-full">
+        <div className="flex w-full flex-wrap justify-center gap-3">
           <button
             type="button"
             onClick={handleToggleFavorite}
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
               isFavorite
                 ? "bg-[var(--accent)] text-white shadow-michi-1"
-                : "bg-[var(--panel)] text-[var(--text-strong)] shadow-michi-1 hover:bg-[var(--accent)]/10"
+                : "mw-surface-soft text-[var(--text-strong)] shadow-michi-1 hover:bg-[var(--accent-soft)]"
             }`}
           >
             <FiStar />
@@ -390,7 +475,7 @@ export default function WeatherPage() {
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
               isHomeCity
                 ? "bg-[var(--accent)] text-white shadow-michi-1"
-                : "bg-[var(--panel)] text-[var(--text-strong)] shadow-michi-1 hover:bg-[var(--accent)]/10"
+                : "mw-surface-soft text-[var(--text-strong)] shadow-michi-1 hover:bg-[var(--accent-soft)]"
             }`}
           >
             <FiMapPin />
@@ -398,38 +483,42 @@ export default function WeatherPage() {
           </button>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 w-full">
+        <div className="flex w-full flex-wrap justify-center gap-3">
           <button
+            type="button"
             onClick={() => setViewMode("hoy")}
-            className={`h-10 min-w-[96px] px-6 rounded-full font-semibold transition-all duration-300 whitespace-nowrap ${
+            className={`h-10 min-w-[96px] whitespace-nowrap rounded-full px-6 font-semibold transition-all duration-300 ${
               viewMode === "hoy"
                 ? "bg-[var(--accent)] text-white shadow-michi-1"
-                : "bg-[var(--panel)] text-[var(--text-strong)] hover:bg-[var(--accent)]/20"
+                : "mw-surface-soft text-[var(--text-strong)] hover:bg-[var(--accent-soft)]"
             }`}
           >
             Hoy
           </button>
 
           <button
+            type="button"
             onClick={() => setViewMode("semana")}
-            className={`h-10 min-w-[96px] px-6 rounded-full font-semibold transition-all duration-300 whitespace-nowrap ${
+            className={`h-10 min-w-[96px] whitespace-nowrap rounded-full px-6 font-semibold transition-all duration-300 ${
               viewMode === "semana"
                 ? "bg-[var(--accent)] text-white shadow-michi-1"
-                : "bg-[var(--panel)] text-[var(--text-strong)] hover:bg-[var(--accent)]/20"
+                : "mw-surface-soft text-[var(--text-strong)] hover:bg-[var(--accent-soft)]"
             }`}
           >
             Semana
           </button>
         </div>
 
-        <div className="w-full max-w-full rounded-xl bg-[var(--panel)]/55 shadow-michi-1 min-w-0">
+        <div className="mw-card w-full max-w-full min-w-0 rounded-3xl p-1">
           <div className="px-4 pt-4">
             <p className="text-sm font-semibold text-[var(--accent)]">
-              {viewMode === "hoy" ? "Pronóstico por horario" : "Pronóstico semanal"}
+              {viewMode === "hoy"
+                ? "Pronóstico por horario"
+                : "Pronóstico semanal"}
             </p>
           </div>
 
-          <div className="forecast-scrollbar w-full overflow-x-auto px-4 pt-4 pb-3">
+          <div className="forecast-scrollbar w-full overflow-x-auto px-4 pb-3 pt-4">
             {viewMode === "hoy" ? (
               <ForecastHourly data={city.hourly ?? []} />
             ) : (

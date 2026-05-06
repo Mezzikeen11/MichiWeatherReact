@@ -49,40 +49,57 @@ function getIconByWeatherCode(code?: number): IconType {
   return WiCloud;
 }
 
+function getTempLabel(temp: number) {
+  if (temp <= 5) return "Helado";
+  if (temp <= 10) return "Muy frío";
+  if (temp <= 15) return "Frío";
+  if (temp <= 20) return "Fresco";
+  if (temp <= 25) return "Templado";
+  if (temp <= 29) return "Cálido";
+  if (temp <= 33) return "Caluroso";
+  if (temp <= 37) return "Muy caluroso";
+  return "Extremo";
+}
+
 export default function ForecastWeekly({ data = [] }: ForecastWeeklyProps) {
   if (!Array.isArray(data) || data.length === 0) return null;
 
   return (
     <section aria-label="Pronóstico semanal" className="w-full">
-      <div className="flex gap-3 min-w-max">
-        {data.map((d, i) => {
-          const IconComponent = d.icon
-            ? iconMap[d.icon] || WiCloud
-            : getIconByWeatherCode(d.weatherCode);
+      <div className="flex min-w-max gap-3">
+        {data.map((day, index) => {
+          const IconComponent = day.icon
+            ? iconMap[day.icon] || WiCloud
+            : getIconByWeatherCode(day.weatherCode);
 
           return (
-            <div
-              key={`${d.day}-${i}`}
-              className="min-w-[94px] bg-[var(--panel)]/95 rounded-xl p-3 shadow-michi-1 flex flex-col items-center justify-center transition hover:scale-[1.02]"
+            <article
+              key={`${day.day}-${index}`}
+              className="mw-surface-soft min-w-[112px] rounded-2xl p-3 text-center shadow-michi-1 transition hover:-translate-y-1 hover:shadow-lg"
             >
-              <p className="text-xs font-semibold text-[var(--text-soft)]">
-                {d.day}
+              <p className="text-xs font-bold uppercase tracking-wide text-[var(--text-soft)]">
+                {day.day}
               </p>
 
               <IconComponent
-                className="text-[var(--accent)] text-4xl my-1"
+                className="mx-auto my-2 text-4xl text-[var(--accent)]"
                 aria-hidden
               />
 
-              <div className="flex flex-col items-center">
-                <span className="text-lg font-bold text-[var(--text-strong)]">
-                  {d.max}°
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-xl font-extrabold text-[var(--text-strong)]">
+                  {day.max}°
                 </span>
-                <span className="text-sm text-[var(--text-soft)]">
-                  {d.min}°
+
+                <span className="text-sm font-semibold text-[var(--text-soft)]">
+                  / {day.min}°
                 </span>
               </div>
-            </div>
+
+              <p className="mt-1 text-[11px] font-semibold text-[var(--text-soft)]">
+                {getTempLabel(day.max)}
+              </p>
+            </article>
           );
         })}
       </div>

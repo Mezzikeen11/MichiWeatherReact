@@ -31,33 +31,49 @@ function getIconByWeatherCode(code?: number) {
   return WiCloud;
 }
 
+function getTempLabel(temp: number) {
+  if (temp <= 5) return "Helado";
+  if (temp <= 10) return "Muy frío";
+  if (temp <= 15) return "Frío";
+  if (temp <= 20) return "Fresco";
+  if (temp <= 25) return "Templado";
+  if (temp <= 29) return "Cálido";
+  if (temp <= 33) return "Caluroso";
+  if (temp <= 37) return "Muy caluroso";
+  return "Extremo";
+}
+
 export default function ForecastHourly({ data = [] }: ForecastHourlyProps) {
   if (!Array.isArray(data) || data.length === 0) return null;
 
   return (
     <section aria-label="Pronóstico por horas" className="w-full">
-      <div className="flex gap-3 min-w-max">
-        {data.map((hour, i) => {
+      <div className="flex min-w-max gap-3">
+        {data.map((hour, index) => {
           const IconComponent = getIconByWeatherCode(hour.weatherCode);
 
           return (
-            <div
-              key={`${hour.hour}-${i}`}
-              className="min-w-[88px] bg-[var(--panel)]/95 rounded-xl p-3 shadow-michi-1 flex flex-col items-center justify-center transition hover:scale-[1.02]"
+            <article
+              key={`${hour.hour}-${index}`}
+              className="mw-surface-soft min-w-[96px] rounded-2xl p-3 text-center shadow-michi-1 transition hover:-translate-y-1 hover:shadow-lg"
             >
-              <p className="text-xs font-semibold text-[var(--text-soft)]">
+              <p className="text-xs font-bold uppercase tracking-wide text-[var(--text-soft)]">
                 {hour.hour}
               </p>
 
               <IconComponent
-                className="text-[var(--accent)] text-4xl my-1"
+                className="mx-auto my-2 text-4xl text-[var(--accent)]"
                 aria-hidden
               />
 
-              <p className="text-lg font-bold text-[var(--text-strong)]">
+              <p className="text-xl font-extrabold text-[var(--text-strong)]">
                 {hour.temp}°
               </p>
-            </div>
+
+              <p className="mt-1 text-[11px] font-semibold text-[var(--text-soft)]">
+                {getTempLabel(hour.temp)}
+              </p>
+            </article>
           );
         })}
       </div>

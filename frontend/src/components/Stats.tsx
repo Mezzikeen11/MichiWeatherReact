@@ -6,6 +6,30 @@ interface StatsProps {
   propViento: number;
 }
 
+function getRainLevel(value: number) {
+  if (value <= 5) return "Sin lluvia";
+  if (value <= 25) return "Baja";
+  if (value <= 50) return "Moderada";
+  if (value <= 75) return "Alta";
+  return "Muy alta";
+}
+
+function getHumidityLevel(value: number) {
+  if (value <= 25) return "Muy seca";
+  if (value <= 40) return "Seca";
+  if (value <= 65) return "Ideal";
+  if (value <= 80) return "Húmeda";
+  return "Muy húmeda";
+}
+
+function getWindLevel(value: number) {
+  if (value <= 5) return "Calmado";
+  if (value <= 15) return "Ligero";
+  if (value <= 30) return "Moderado";
+  if (value <= 45) return "Fuerte";
+  return "Muy fuerte";
+}
+
 export default function Stats({
   propLLuvia,
   propHumedad,
@@ -15,16 +39,19 @@ export default function Stats({
     {
       label: "Lluvia",
       value: `${propLLuvia}%`,
+      level: getRainLevel(propLLuvia),
       icon: WiUmbrella,
     },
     {
       label: "Humedad",
       value: `${propHumedad}%`,
+      level: getHumidityLevel(propHumedad),
       icon: WiHumidity,
     },
     {
       label: "Viento",
       value: `${propViento} km/h`,
+      level: getWindLevel(propViento),
       icon: WiStrongWind,
     },
   ];
@@ -38,17 +65,23 @@ export default function Stats({
           return (
             <article
               key={item.label}
-              className="rounded-2xl border border-[var(--line)] bg-[var(--panel)] px-4 py-4 shadow-michi-1"
+              className="mw-surface-soft rounded-2xl p-4 text-center shadow-michi-1 transition hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="flex flex-col items-center text-center">
-                <Icon className="text-4xl text-[var(--accent)]" aria-hidden />
-                <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-[var(--text-soft)]">
-                  {item.label}
-                </p>
-                <p className="mt-1 text-xl font-extrabold text-[var(--text-strong)]">
-                  {item.value}
-                </p>
+              <div className="mw-surface-float mx-auto flex h-12 w-12 items-center justify-center rounded-2xl text-3xl text-[var(--accent)]">
+                <Icon aria-hidden />
               </div>
+
+              <p className="mt-3 text-xs font-bold uppercase tracking-wide text-[var(--text-soft)]">
+                {item.label}
+              </p>
+
+              <p className="mt-1 text-xl font-extrabold text-[var(--text-strong)]">
+                {item.value}
+              </p>
+
+              <span className="mt-2 inline-flex rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-bold text-[var(--accent)]">
+                {item.level}
+              </span>
             </article>
           );
         })}
