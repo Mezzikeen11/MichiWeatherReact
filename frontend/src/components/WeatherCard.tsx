@@ -32,7 +32,14 @@ function inferWeatherKey(condition: string, weatherCode?: number) {
   if (normalized.includes("lloviz")) return "llovizna";
   if (normalized.includes("lluv")) return "lluvioso";
   if (normalized.includes("niev")) return "nieve";
-  if (normalized.includes("niebla") || normalized.includes("bruma")) return "niebla";
+
+  if (
+    normalized.includes("niebla") ||
+    normalized.includes("bruma") ||
+    normalized.includes("neblina")
+  ) {
+    return "niebla";
+  }
 
   return "nublado";
 }
@@ -68,6 +75,7 @@ export default function WeatherCard({
 
   const prefix =
     catPrefixMap[selectedCatId ?? "Michi"] ?? selectedCatId ?? "Michi";
+
   const suffix = suffixMap[keyFromCode] ?? "Nublado";
   const catKey = `${prefix}${suffix}`;
 
@@ -77,50 +85,63 @@ export default function WeatherCard({
     {};
 
   return (
-    <div className="relative flex flex-col items-center w-full max-w-[540px] mx-auto text-center min-w-0">
+    <div className="relative mx-auto flex w-full max-w-[540px] min-w-0 flex-col items-center text-center">
       <div className="mb-2 w-full px-4 sm:px-0">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[var(--text-strong)] leading-tight">
+        <h2 className="text-4xl font-extrabold leading-tight text-[var(--text-strong)] sm:text-5xl md:text-6xl">
           {location}
         </h2>
 
-        <h3 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-semibold text-[var(--accent)]">
+        <h3 className="mt-2 text-2xl font-semibold text-[var(--accent)] sm:text-3xl md:text-4xl">
           {condition}
         </h3>
       </div>
 
-      <div className="relative w-[250px] h-[250px] sm:w-[340px] sm:h-[340px] md:w-[420px] md:h-[420px] rounded-full overflow-hidden flex items-center justify-center mx-auto bg-transparent shadow-michi-1">
-        {fondo && (
+      <div className="mw-surface-soft relative mx-auto flex h-[250px] w-[250px] items-center justify-center overflow-hidden rounded-full bg-transparent shadow-michi-1 sm:h-[340px] sm:w-[340px] md:h-[420px] md:w-[420px]">
+        {fondo ? (
           <img
             src={fondo}
-            alt="fondo clima"
-            className="absolute inset-0 w-full h-full object-cover"
+            alt={`Fondo del clima: ${condition}`}
+            className="absolute inset-0 h-full w-full object-cover"
           />
+        ) : (
+          <div className="absolute inset-0 bg-[var(--accent-soft)]" />
         )}
 
-        {michi && (
+        {michi ? (
           <img
             src={michi}
-            alt="michi"
-            className="absolute bottom-[2%] left-[8%] w-[150px] sm:w-[185px] md:w-[235px] lg:w-[250px] object-contain"
+            alt={`Michi para clima ${condition}`}
+            className="absolute bottom-[2%] left-[8%] w-[150px] object-contain sm:w-[185px] md:w-[235px] lg:w-[250px]"
           />
+        ) : (
+          <div className="z-10 rounded-full bg-[var(--accent-soft)] px-4 py-2 text-sm font-bold text-[var(--accent)]">
+            MichiWeather
+          </div>
         )}
 
         <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/5 via-transparent to-white/5" />
       </div>
 
-      <div className="mt-3 flex items-center justify-center gap-6 px-4 sm:px-10 w-full max-w-[460px] mx-auto flex-wrap">
+      <div className="mt-3 flex w-full max-w-[460px] flex-wrap items-center justify-center gap-6 px-4 sm:px-10">
         <div>
-          <h1 className="text-[76px] md:text-[96px] font-extrabold text-[var(--text-strong)] leading-none">
+          <h1 className="text-[76px] font-extrabold leading-none text-[var(--text-strong)] md:text-[96px]">
             {temp}°
           </h1>
         </div>
 
-        <div className="flex flex-col justify-center text-base sm:text-lg md:text-xl text-[var(--text-soft)]">
+        <div className="flex flex-col justify-center text-base text-[var(--text-soft)] sm:text-lg md:text-xl">
           <p>
-            Máx: <span className="text-[var(--text-strong)] font-semibold">{max}°</span>
+            Máx:{" "}
+            <span className="font-semibold text-[var(--text-strong)]">
+              {max}°
+            </span>
           </p>
+
           <p>
-            Mín: <span className="text-[var(--text-strong)] font-semibold">{min}°</span>
+            Mín:{" "}
+            <span className="font-semibold text-[var(--text-strong)]">
+              {min}°
+            </span>
           </p>
         </div>
       </div>
